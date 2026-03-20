@@ -1,8 +1,7 @@
-/* 1. FORÇAR O CONTEÚDO A OCUPAR A TELA TODA */
+/* FORÇAR FUNDO E ALTURA */
 ion-content {
-  --background: #000;
+  --background: #000 !important;
   height: 100vh !important;
-  display: block;
   
   &.bg-preparacao { --background: #ffca28 !important; }
   &.bg-acao { --background: #2dd36f !important; }
@@ -10,71 +9,73 @@ ion-content {
   &.bg-descanso-bloco { --background: #3880ff !important; }
 }
 
-/* 2. CONTAINER DA INTERFACE */
 .interface-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Ocupa a altura total da janela */
+  height: 100vh;
   width: 100%;
-  position: relative;
-  overflow: hidden;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* 3. TIMER CENTRAL (Reduzido para não expulsar os botões) */
+/* TEXTOS DO TOPO */
+.header-status-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: #000 !important; // Força preto para aparecer no fundo colorido
+  
+  .status-item span, .status-item small {
+    color: #000 !important;
+    font-weight: bold;
+  }
+}
+
+/* NÚMERO CENTRAL */
 .timer-main-frame {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: 120px; /* Abre espaço para os botões que estarão fixos */
 }
 
 .clock-text {
-  font-size: 35vh !important; /* Tamanho seguro */
+  font-size: 30vh !important;
+  color: #000 !important;
   font-weight: 900;
-  color: #000;
   margin: 0;
-  letter-spacing: -10px;
 }
 
-/* 4. CONTROLES FIXOS NO RODAPÉ */
+/* BOTÕES DO RODAPÉ */
 .footer-controls {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  padding-bottom: 30px; /* Distância do fim da tela */
-  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 999;
+  padding-bottom: 50px;
 }
 
 .main-buttons-row {
   display: flex;
   gap: 20px;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.1); /* Fundo sutil para destacar os botões */
-  padding: 10px 20px;
-  border-radius: 50px;
 }
 
 .btn-modern {
-  width: 70px !important;
-  height: 70px !important;
+  width: 80px !important;
+  height: 80px !important;
   --border-radius: 50% !important;
-  margin: 0;
-
-  &.green  { --background: #2dd36f !important; --color: #000; }
-  &.orange { --background: #ffca28 !important; --color: #000; }
-  &.light  { --background: #ffffff !important; --color: #000; }
+  --opacity: 1 !important; // Garante que não fique transparente
+  
+  &.green  { --background: #2dd36f !important; }
+  &.orange { --background: #ffca28 !important; }
+  &.light  { --background: #ffffff !important; }
 
   ion-icon { 
-    font-size: 35px !important; 
+    font-size: 40px !important; 
+    color: #000 !important; 
     visibility: visible !important;
-    color: #000 !important;
   }
 }
 
