@@ -1,27 +1,27 @@
-/* 1. CONFIGURAÇÃO DO FUNDO (ION-CONTENT) */
+/* 1. CONFIGURAÇÃO DO FUNDO E ALTURA (ION-CONTENT) */
 ion-content {
-  --background: #000 !important; // Fundo padrão preto caso as classes falhem
+  --background: #000 !important;
   height: 100vh !important;
-  --overflow: hidden; // Remove qualquer scroll estranho
+  --overflow: hidden;
 
-  /* Classes de cores de fase */
+  /* Classes de cores de fase dinâmicas */
   &.bg-preparacao { --background: #ffca28 !important; background: #ffca28 !important; }
   &.bg-acao { --background: #2dd36f !important; background: #2dd36f !important; }
   &.bg-recuperacao { --background: #eb445a !important; background: #eb445a !important; }
   &.bg-descanso-bloco { --background: #3880ff !important; background: #3880ff !important; }
 
-  /* Efeito de piscar ao trocar de fase */
+  /* Efeito visual de piscar */
   &.piscando {
     --background: #ffffff !important;
     background: #ffffff !important;
   }
 }
 
-/* 2. ESTRUTURA PRINCIPAL DA INTERFACE */
+/* 2. ESTRUTURA PRINCIPAL */
 .interface-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   height: 100vh;
   width: 100%;
@@ -31,7 +31,7 @@ ion-content {
   background: transparent !important;
 }
 
-/* 3. HEADER (BLOCO, EXERCÍCIO, ROUND) */
+/* 3. TOPO (STATUS) */
 .header-status-row {
   display: flex;
   justify-content: space-between;
@@ -88,35 +88,39 @@ ion-content {
   }
 }
 
-/* 5. CRONÔMETRO CENTRAL GIGANTE */
+/* 5. CRONÔMETRO CENTRAL */
 .timer-main-frame {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-height: 45vh; // Impede que o número empurre os botões
   min-height: 0;
 }
 
 .clock-text {
-  font-size: 38vh !important; // Tamanho ideal para não quebrar o layout
+  font-size: 38vh !important;
   font-weight: 900;
   color: #000 !important;
   line-height: 0.8;
   margin: 0;
   font-family: 'Arial Black', sans-serif;
-  letter-spacing: -10px;
+  letter-spacing: -15px;
   font-variant-numeric: tabular-nums;
 }
 
-/* 6. CONTROLES (RODAPÉ) */
+/* 6. CONTROLES FIXOS (RODAPÉ) */
 .footer-controls {
+  position: fixed !important; 
+  bottom: 20px !important;
+  left: 0;
   width: 100%;
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 30px;
-  z-index: 100;
+  z-index: 9999 !important; // Garante ficar na frente da cor de fundo
+  pointer-events: all !important;
 }
 
 .main-buttons-row {
@@ -129,28 +133,45 @@ ion-content {
 .btn-modern {
   width: 75px !important;
   height: 75px !important;
-  --border-radius: 50% !important;
-  --box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  margin: 0;
+  border-radius: 50% !important;
+  border: none !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  cursor: pointer;
+  transition: transform 0.1s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  opacity: 1 !important;
+  visibility: visible !important;
 
-  &.green  { --background: #2dd36f !important; }
-  &.orange { --background: #ffca28 !important; }
-  &.light  { --background: #ffffff !important; }
+  &:active { transform: scale(0.9); }
 
-  ion-icon { 
-    font-size: 35px !important; 
-    color: #000 !important;
-    visibility: visible !important;
+  &.green  { background-color: #2dd36f !important; }
+  &.orange { background-color: #ffca28 !important; }
+  &.light  { background-color: #ffffff !important; }
+
+  svg {
+    display: block;
+    pointer-events: none;
+    fill: currentColor; // Faz o SVG herdar a cor preta
   }
 }
 
 .btn-config {
-  --color: #000 !important;
-  margin-top: 15px;
-  ion-icon { font-size: 40px !important; }
+  background: none;
+  border: none;
+  margin-top: 20px;
+  color: #000;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg { display: block; fill: currentColor; }
 }
 
-/* 7. TELA INICIAL (DESTRAVA ÁUDIO) */
+/* 7. TELA INICIAL (DESTRAVA SOM) */
 .tela-inicial {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -158,7 +179,7 @@ ion-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 10000;
 
   .boas-vindas {
     text-align: center;
@@ -177,33 +198,16 @@ ion-content {
       align-items: center;
       gap: 15px;
       box-shadow: 0 0 20px rgba(45, 211, 111, 0.3);
+      cursor: pointer;
       
       &:active { transform: scale(0.95); }
     }
   }
 }
 
-/* AJUSTES PARA CELULAR EM PAISAGEM (DEITADO) */
+/* AJUSTES PARA CELULAR DEITADO */
 @media (orientation: landscape) {
   .clock-text { font-size: 60vh !important; }
   .header-status-row span { font-size: 1.4rem; }
-}
-.footer-controls {
-  position: fixed !important; // Muda de absolute para fixed
-  bottom: 20px !important;
-  left: 0;
-  width: 100%;
-  display: flex !important; // Força o display
-  flex-direction: column;
-  align-items: center;
-  z-index: 9999 !important; // Coloca na frente de TUDO
-  pointer-events: all !important; // Garante que o clique funcione
-}
-
-.btn-modern {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  --opacity: 1 !important;
-  border: 2px solid black !important; // Adiciona uma borda para vermos o contorno
+  .footer-controls { bottom: 10px !important; }
 }
