@@ -1,0 +1,175 @@
+/* 1. FUNDOS DINÂMICOS */
+.bg-acao { --background: #db0909 !important; transition: 0.5s; }
+.bg-recuperacao { --background: #f3d008 !important; transition: 0.5s; }
+.bg-preparacao { --background: #5dade2 !important; transition: 0.5s; }
+.bg-descanso-bloco { --background: #2ecc71 !important; transition: 0.5s; }
+
+/* Efeito de Flash Branco */
+.piscando {
+  --background: #ffffff !important;
+  transition: 0.1s ease-in-out;
+}
+
+ion-content {
+  --background: transparent;
+  height: 100dvh;
+}
+
+/* 2. ESTRUTURA PRINCIPAL */
+.interface-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; // Garante Topo, Meio e Fim distribuídos
+  height: 100dvh;
+  width: 100vw;
+  padding: 10px 20px;
+  align-items: center;
+  overflow: hidden; 
+  transition: all 0.5s ease-in-out;
+
+  @media (orientation: landscape) {
+    padding: 5px 10px;
+  }
+}
+
+/* 3. HEADER - STATUS EM LINHA */
+.header-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 10px;
+  width: 100%;
+  
+  // Analisar para excluir: fundo preto e bordas comentados
+  // background: #000000; 
+  // border-radius: 12px;
+  // border: 1px solid #333;
+
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    small {
+      color: #000000 !important;
+      font-weight: 900;
+      font-size: 0.9rem;
+      letter-spacing: 5px;
+      margin-bottom: 5px;
+    }
+
+    span {
+      color: #000000 !important;
+      font-weight: 900;
+      font-size: 2.4rem;
+      text-transform: uppercase;
+    }
+
+    &.main {
+      flex: 5; 
+      padding: 0 10px;
+      
+      span {
+        font-size: 2.2rem;
+        line-height: 1.1;
+        text-align: center;
+        word-break: break-word;
+        white-space: normal; 
+      }
+    }
+  }
+}
+
+/* 4. BARRA DE PROGRESSO */
+.barra-progresso-container {
+  height: 8px;
+  background: #1a1a1a;
+  margin: 5px 0;
+  border-radius: 4px;
+  width: 90%;
+  overflow: hidden;
+
+  .barra-preenchimento {
+    height: 100%;
+    background: #000000;
+    transition: width 0.3s ease;
+  }
+}
+
+/* 5. CRONÔMETRO CENTRAL GIGANTE */
+.timer-main-frame {
+  flex: 1; // Ocupa o espaço central disponível
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.clock-text {
+  font-size: 100vh; // Reduzido de 70 para 50 para garantir que caibam os botões
+  font-weight: 900;
+  color: #000;
+  line-height: 1;
+  font-family: 'Arial Black', sans-serif;
+  text-align: center;
+  margin: 0;
+  
+  /* Ajuste de proximidade dos números */
+  letter-spacing: -40px;
+  text-indent: -40px;
+  transform: translateX(-10px) !important;
+
+  font-variant-numeric: tabular-nums;
+  user-select: none; 
+  touch-action: manipulation; 
+
+  @media (orientation: landscape) {
+    font-size: 65dvh !important;
+    letter-spacing: -25px !important;
+    text-indent: -25px;
+  }
+}
+
+/* 6. CONTROLES (BOTÕES) */
+.footer-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 20px;
+  z-index: 10;
+}
+
+.main-buttons-row {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
+
+.btn-modern {
+  width: 75px !important;
+  height: 75px !important;
+  border-radius: 50% !important;
+  --border-radius: 50%;
+  --padding-start: 0;
+  --padding-end: 0;
+  
+  &.green  { --background: #af363604; --color: #000; }
+  &.orange { --background: #275f9400; --color: #000; }
+  &.light  { --background: #756f6f00; --color: #000; }
+
+  ion-icon { font-size: 35px !important; }
+}
+
+.btn-config {
+  --color: #000000; 
+  margin-top: 5px;
+  ion-icon { font-size: 45px !important; }
+}
+
+/* AJUSTES DE TELA GRANDE / PC */
+@media (min-width: 992px) {
+  .interface-container { gap: 20px !important; }
+  .clock-text { font-size: 45vh !important; }
+}

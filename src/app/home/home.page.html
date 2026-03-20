@@ -1,0 +1,62 @@
+<ion-content [class.bg-acao]="fase === 'AÇÃO'" 
+             [class.bg-recuperacao]="fase === 'RECUPERAÇÃO'"
+             [class.bg-preparacao]="fase === 'PREPARAÇÃO'"
+             [class.bg-descanso-bloco]="fase === 'DESCANSO_BLOCO'"
+             [class.piscando]="telaPiscando">
+
+  <div class="interface-container">
+    
+    <div class="header-status-row">
+      <div class="status-item">
+        <small>BLOCO</small>
+        <span>
+          {{ (tempo === tempoInicial && !treinando) ? 0 : (indiceBlocoAtual + 1) }} / {{ totalBlocos }}
+        </span>
+      </div>
+
+      <div class="status-item main">
+        <small>EXERCÍCIO</small>
+        <span>{{ rotuloAtual }}</span>
+      </div>
+
+      <div class="status-item">
+        <small>ROUND</small>
+        <span>
+          {{ (tempo === tempoInicial && !treinando) ? 0 : (indiceRoundAtual + 1) }} / {{ totalRoundsNoBloco }}
+        </span>
+      </div>
+    </div>
+
+    <div class="barra-progresso-container">
+      <div class="barra-preenchimento" [style.width.%]="progressoTotal * 100"></div>
+    </div>
+
+    <div class="timer-main-frame">
+      <h1 class="clock-text">
+        {{ tempo < 60 ? tempo : formatarTempo(tempo) }}
+      </h1>
+    </div>
+
+    <div class="footer-controls">
+      
+      <div class="main-buttons-row">
+        <ion-button class="btn-modern green" (click)="iniciarTreino()" *ngIf="!treinando">
+          <ion-icon name="play" slot="icon-only"></ion-icon>
+        </ion-button>
+        
+        <ion-button class="btn-modern orange" (click)="pausarTreino()" *ngIf="treinando">
+          <ion-icon name="pause" slot="icon-only"></ion-icon>
+        </ion-button>
+
+        <ion-button class="btn-modern light" (click)="resetarTreino()" *ngIf="!treinando && tempo !== tempoInicial">
+          <ion-icon name="refresh" slot="icon-only"></ion-icon>
+        </ion-button>
+        </div>
+
+      <ion-button fill="clear" class="btn-config" (click)="abrirConfiguracoes()" *ngIf="!treinando">
+        <ion-icon name="settings-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>

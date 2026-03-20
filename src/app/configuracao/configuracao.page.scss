@@ -1,0 +1,212 @@
+// Paleta de Cores de Alta Performance (Mais Sólida)
+$bg-dark: #0f172a;
+$card-bg: #1e293b; // Azul marinho sólido (sem transparência excessiva)
+$accent-blue: #38bdf8;
+$accent-green: #22c55e;
+$muted-red: #f70000; // Vermelho fosco (sem brilho)
+$text-dim: #94a3b8;
+
+ion-content {
+  --background: #0f172a;
+}
+
+// 1. SEÇÃO GLOBAL (Mais robusta)
+.global-section {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 10px;
+  margin: 15px;
+  border-left: 5px solid $accent-blue; // Destaque lateral
+
+  ion-item {
+    --background: transparent;
+    --color: white;
+    --border-color: #334155;
+    
+    border-radius: 12px;
+    
+    ion-label { 
+      color: $accent-blue !important; 
+      font-weight: 800 !important;
+      text-transform: uppercase;
+      //font-size: 0.75rem !important;
+    border-radius: 12px;
+      
+    }
+    ion-input { 
+      font-weight: 700 !important;
+      font-size: 1.4rem !important;
+    }
+  }
+}
+
+// 2. O CARD DO BLOCO (Mais preenchido)
+.bloco-card {
+  background: $card-bg;
+  border-radius: 18px;
+  margin: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+
+  .bloco-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 18px 20px; // Mais preenchimento interno
+    
+    .input-nome-bloco {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-weight: 800 !important; // Texto bem grosso
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .bloco-btns {
+      ion-button {
+        --border-radius: 12px;
+        height: 40px;
+        font-weight: 700;
+        
+        // Botão Duplicar
+        &:first-child {
+          --background: #334155;
+          --color: white;
+        }
+
+        // Botão Excluir Bloco (Fosco e sem brilho)
+        &:nth-child(2) {
+          
+          --color: #9c9b9b; // Texto rosado discreto
+          --box-shadow: none; // Remove o glow
+        }
+      }
+    }
+  }
+}
+
+// 3. TABELA DE ROUNDS (Inputs mais altos e preenchidos)
+.rounds-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 5px;
+  margin-top: 10px;
+
+  thead {
+    th {
+      background: #0f172a !important; // Azul marinho profundo
+      color: #38bdf8 !important;   // Azul celeste brilhante
+      font-weight: 900 !important;
+      font-size: 0.7rem;
+      letter-spacing: 1px;
+      padding: 12px 5px;
+      text-align: center;
+      border: none;
+
+      &:first-child { border-radius: 8px 0 0 8px; text-align: left; padding-left: 15px; }
+      &:last-child { border-radius: 0 8px 8px 0; }
+    }
+  }
+
+  tbody td {
+    ion-input {
+      background: #0f172a !important;
+      border: 1px solid #334155 !important;
+      --color: #ffffff !important;
+      font-weight: 800 !important;
+      height: 50px;
+      border-radius: 10px;
+      
+      input { text-align: center; }
+    }
+    
+    // Alinha o texto do nome do exercício para a esquerda
+    &:first-child ion-input input { text-align: left; padding-left: 10px; }
+  }
+}
+
+.add-round-buttons {
+  padding: 10px;
+  ion-button {
+    --background: #334155;
+    --border-radius: 12px;
+    font-weight: 700;
+  }
+}
+
+  ion-input {
+    background: #0f172a !important;
+    border-radius: 12px;
+    color: $accent-blue  !important;
+    height: 50px; // Input mais alto
+    margin: 5px 0;
+    font-weight: 700 !important;
+    --padding-start: 20px;
+    width: 400px;
+
+    input { color: white !important; }
+  }
+
+  // BOTÃO X (Fechar Round - Fosco)
+  ion-button {
+    //--background: #7f1d1d; // Vermelho terra fosco
+    --color: #f87171;
+    --border-radius: 10px;
+    --box-shadow: none;
+  }
+
+
+// 4. BOTÃO ADICIONAR BLOCO (Destaque Máximo)
+.ion-margin-top {
+  --background: #38bdf8;
+  --color: #0f172a;
+  --border-radius: 16px;
+  height: 60px;
+  font-weight: 900;
+  font-size: 1rem;
+  margin: 20px 15px;
+  text-transform: uppercase;
+}
+
+
+// 5. RODAPÉ (Cores sólidas e botões grandes)
+ion-footer {
+  ion-toolbar { --background: #0f172a; padding: 12px; }
+  
+  [color="success"] {
+    --background: #22c55e;
+    --color: #052e16;
+    --border-radius: 14px;
+    font-weight: 800;
+  }
+
+  ion-button:not([color="success"]) {
+    --background: #ffffff;
+    --color: #0f202a;
+    --border-radius: 14px;
+    font-weight: 800;
+  }
+}
+
+// 6. BOTÃO APAGAR TREINO (Totalmente discreto)
+.acoes-finais ion-button[color="danger"] {
+  --background: transparent;
+  --color: #475569; // Cinza azulado (quase some no fundo)
+  font-weight: 600;
+  text-decoration: underline;
+}
+/* AJUSTE NO CSS PARA O BOTÃO ÚNICO */
+.add-round-buttons {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03); // Fundo sutil para separar da tabela
+  
+  ion-button {
+    --background: #021a3d; // Cinza sólido e elegante
+    --color: #ffffff;
+    --border-radius: 12px;
+    --padding-top: 15px;
+    --padding-bottom: 15px;
+    height: px;
+    font-weight: 800;
+    margin: 0;
+  }
+}
