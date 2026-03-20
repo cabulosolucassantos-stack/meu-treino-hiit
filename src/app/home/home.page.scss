@@ -1,16 +1,14 @@
-/* 1. CONFIGURAÇÃO DO FUNDO E ALTURA (ION-CONTENT) */
+/* 1. CONFIGURAÇÃO DO FUNDO E ALTURA */
 ion-content {
   --background: #000 !important;
   height: 100vh !important;
   --overflow: hidden;
 
-  /* Classes de cores de fase dinâmicas */
   &.bg-preparacao { --background: #ffca28 !important; background: #ffca28 !important; }
   &.bg-acao { --background: #2dd36f !important; background: #2dd36f !important; }
   &.bg-recuperacao { --background: #eb445a !important; background: #eb445a !important; }
   &.bg-descanso-bloco { --background: #3880ff !important; background: #3880ff !important; }
 
-  /* Efeito visual de piscar */
   &.piscando {
     --background: #ffffff !important;
     background: #ffffff !important;
@@ -21,8 +19,6 @@ ion-content {
 .interface-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   height: 100vh;
   width: 100%;
   padding: 15px;
@@ -72,14 +68,15 @@ ion-content {
   }
 }
 
-/* 4. BARRA DE PROGRESSO */
+/* 4. BARRA DE PROGRESSO - Posicionada no topo */
 .barra-progresso-container {
   height: 8px;
   background: rgba(0, 0, 0, 0.1);
-  margin: 10px 0;
+  margin: 5px 0 20px 0; // Margem inferior para empurrar o cronômetro para baixo
   border-radius: 10px;
   width: 90%;
   overflow: hidden;
+  z-index: 10;
 
   .barra-preenchimento {
     height: 100%;
@@ -88,29 +85,30 @@ ion-content {
   }
 }
 
-/* 5. CRONÔMETRO CENTRAL (Otimizado) */
+/* 5. CRONÔMETRO CENTRAL - Ajustado para subir */
 .timer-main-frame {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; // Faz o número "grudar" no topo da área central
   width: 100%;
-  max-height: 40vh; 
+  padding-top: 2vh; // Ajuste fino para não bater no nome do exercício
+  max-height: 45vh; 
   min-height: 0;
 }
 
 .clock-text {
-  font-size: 30vh !important; 
+  font-size: 35vh !important; 
   font-weight: 900;
   color: #000 !important;
-  line-height: 1;
+  line-height: 0.8; // Remove espaço vazio vertical do caractere
   margin: 0;
   font-family: 'Arial Black', sans-serif;
-  letter-spacing: -5px;
+  letter-spacing: -10px;
   font-variant-numeric: tabular-nums;
 }
 
-/* 6. CONTROLES FIXOS NO FUNDO (BLINDADO) */
+/* 6. CONTROLES FIXOS NO FUNDO */
 .footer-controls {
   position: fixed !important;
   bottom: 0;
@@ -144,8 +142,6 @@ ion-content {
   align-items: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   cursor: pointer;
-  opacity: 1 !important;
-  visibility: visible !important;
 
   &:active { transform: scale(0.9); }
 
@@ -153,11 +149,7 @@ ion-content {
   &.orange { background-color: #ffca28 !important; color: #000; }
   &.light  { background-color: #ffffff !important; color: #000; }
 
-  svg {
-    display: block;
-    pointer-events: none;
-    fill: currentColor;
-  }
+  svg { fill: currentColor; display: block; }
 }
 
 .btn-config {
@@ -166,14 +158,10 @@ ion-content {
   margin-top: 15px;
   color: #000;
   cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  svg { display: block; fill: currentColor; }
+  svg { fill: currentColor; }
 }
 
-/* 7. TELA INICIAL (DESTRAVA ÁUDIO) */
+/* 7. TELA INICIAL */
 .tela-inicial {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -185,31 +173,22 @@ ion-content {
 
   .boas-vindas {
     text-align: center;
-    h1 { color: #fff; font-size: 2.2rem; margin-bottom: 5px; }
-    p { color: #888; font-size: 1.1rem; margin-bottom: 30px; }
-
+    h1 { color: #fff; font-size: 2.2rem; }
     .btn-iniciar-gigante {
       background: #2dd36f;
       color: #000;
-      border: none;
       padding: 20px 50px;
       font-size: 1.6rem;
       font-weight: bold;
       border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      box-shadow: 0 0 20px rgba(45, 211, 111, 0.3);
-      cursor: pointer;
-      
-      &:active { transform: scale(0.95); }
+      margin-top: 30px;
     }
   }
 }
 
-/* AJUSTES PARA CELULAR DEITADO */
+/* AJUSTES PAISAGEM */
 @media (orientation: landscape) {
-  .clock-text { font-size: 60vh !important; }
+  .clock-text { font-size: 55vh !important; }
   .header-status-row span { font-size: 1.4rem; }
   .footer-controls { padding-bottom: 10px !important; }
 }
