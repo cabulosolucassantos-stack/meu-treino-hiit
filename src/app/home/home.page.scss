@@ -1,3 +1,4 @@
+/* 1. CORES DE FUNDO */
 :host {
   .bg-preparacao { --background: #ffca28 !important; background: #ffca28 !important; }
   .bg-acao { --background: #2dd36f !important; background: #2dd36f !important; }
@@ -16,29 +17,25 @@ ion-content {
   &.bg-descanso-bloco { --background: #3880ff; }
 }
 
+/* 2. ESTRUTURA PRINCIPAL */
 .interface-container {
-  background: transparent !important;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100dvh;
-  width: 100vw;
-  padding: 10px 20px;
+  height: 100%; // Usa a altura total disponível
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  justify-content: space-between; // Distribui topo, meio e botões
   align-items: center;
   overflow: hidden; 
-  transition: all 0.5s ease-in-out;
-
-  @media (orientation: landscape) {
-    padding: 5px 10px;
-  }
 }
 
+/* 3. HEADER */
 .header-status-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 10px;
   width: 100%;
+  justify-content: space-between;
+  padding: 10px 0;
 
   .status-item {
     display: flex;
@@ -46,137 +43,102 @@ ion-content {
     align-items: center;
     flex: 1;
 
-    small {
-      color: #000000 !important;
-      font-weight: 900;
-      font-size: 0.9rem;
-      letter-spacing: 5px;
-      margin-bottom: 5px;
-    }
+    small { color: #000; font-weight: 900; letter-spacing: 2px; }
+    span { color: #000; font-weight: 900; font-size: 2rem; }
 
-    span {
-      color: #000000 !important;
-      font-weight: 900;
-      font-size: 2.4rem;
-      text-transform: uppercase;
-    }
-
-    &.main {
-      flex: 5; 
-      padding: 0 10px;
-      span {
-        font-size: 2.2rem;
-        line-height: 1.1;
-        text-align: center;
-        word-break: break-word;
-      }
-    }
+    &.main span { font-size: 1.8rem; text-align: center; }
   }
 }
 
+/* 4. BARRA DE PROGRESSO */
 .barra-progresso-container {
-  height: 8px;
+  height: 6px;
   background: rgba(0,0,0,0.1);
-  margin: 5px 0;
-  border-radius: 4px;
   width: 90%;
+  border-radius: 10px;
   overflow: hidden;
 
   .barra-preenchimento {
     height: 100%;
-    background: #000000;
-    transition: width 0.3s ease;
+    background: #000;
+    transition: width 0.3s;
   }
 }
 
+/* 5. O CRONÔMETRO (AQUI ESTAVA O ERRO) */
 .timer-main-frame {
-  flex: 1;
+  flex: 1; // Ocupa o espaço que sobrar entre o topo e o rodapé
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  max-height: 50vh; // Garante que nunca passe de metade da tela
 }
 
 .clock-text {
-  font-size: 40vh; // Ajustado para dar espaço aos botões
+  font-size: 35vh; // Reduzido para não expulsar os botões
   font-weight: 900;
   color: #000;
-  line-height: 1;
-  font-family: 'Arial Black', sans-serif;
-  text-align: center;
+  line-height: 0.8;
   margin: 0;
-  letter-spacing: -15px;
-  font-variant-numeric: tabular-nums;
-  user-select: none; 
-
-  @media (orientation: landscape) {
-    font-size: 60dvh !important;
-  }
+  font-family: 'Arial Black', sans-serif;
+  letter-spacing: -10px; // Espaçamento negativo moderado
 }
 
+/* 6. CONTROLES (RODAPÉ) */
 .footer-controls {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  padding-bottom: 30px;
-  z-index: 10;
+  padding-bottom: 20px; // Garante que não fique colado no fim da tela
 }
 
 .main-buttons-row {
   display: flex;
-  gap: 40px;
-  justify-content: center;
+  gap: 30px;
+  margin-bottom: 15px;
 }
 
 .btn-modern {
-  width: 80px !important;
-  height: 80px !important;
+  width: 70px !important;
+  height: 70px !important;
   --border-radius: 50%;
   margin: 0;
-  
-  // Cores sólidas e visíveis
-  &.green  { --background: #2dd36f; --color: #000; } 
-  &.orange { --background: #ffca28; --color: #000; } 
-  &.light  { --background: #ffffff; --color: #000; } 
 
-  ion-icon { 
-    font-size: 38px !important; 
-    visibility: visible !important;
-  }
+  &.green  { --background: #2dd36f; --color: #000; }
+  &.orange { --background: #ffca28; --color: #000; }
+  &.light  { --background: #ffffff; --color: #000; }
+
+  ion-icon { font-size: 32px !important; }
 }
 
 .btn-config {
-  --color: #000000; 
-  margin-top: 15px;
-  ion-icon { font-size: 45px !important; }
+  --color: #000;
+  ion-icon { font-size: 35px !important; }
 }
 
+/* TELA INICIAL (DESTRAVA SOM) */
 .tela-inicial {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  z-index: 1000;
-  background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+  top:0; left:0; width:100%; height:100%;
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  z-index: 9999;
 
   .boas-vindas {
-    h1 { color: #fff; font-size: 2.5rem; }
-    p { color: #888; margin-bottom: 30px; }
-  }
-
-  .btn-iniciar-gigante {
-    background: #2dd36f;
-    color: #000;
-    padding: 25px 60px;
-    font-size: 1.8rem;
-    font-weight: bold;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: 0 0 30px rgba(45, 211, 111, 0.4);
+    text-align: center;
+    h1 { color: #fff; font-size: 2rem; }
+    p { color: #666; }
+    .btn-iniciar-gigante {
+      background: #2dd36f;
+      color: #000;
+      padding: 20px 40px;
+      font-size: 1.5rem;
+      border-radius: 50px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
   }
 }
