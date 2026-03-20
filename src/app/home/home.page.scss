@@ -1,86 +1,190 @@
-/* FORÇAR FUNDO E ALTURA */
+/* 1. CONFIGURAÇÃO DO FUNDO (ION-CONTENT) */
 ion-content {
-  --background: #000 !important;
+  --background: #000 !important; // Fundo padrão preto caso as classes falhem
   height: 100vh !important;
-  
-  &.bg-preparacao { --background: #ffca28 !important; }
-  &.bg-acao { --background: #2dd36f !important; }
-  &.bg-recuperacao { --background: #eb445a !important; }
-  &.bg-descanso-bloco { --background: #3880ff !important; }
-}
+  --overflow: hidden; // Remove qualquer scroll estranho
 
-.interface-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
+  /* Classes de cores de fase */
+  &.bg-preparacao { --background: #ffca28 !important; background: #ffca28 !important; }
+  &.bg-acao { --background: #2dd36f !important; background: #2dd36f !important; }
+  &.bg-recuperacao { --background: #eb445a !important; background: #eb445a !important; }
+  &.bg-descanso-bloco { --background: #3880ff !important; background: #3880ff !important; }
 
-/* TEXTOS DO TOPO */
-.header-status-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  color: #000 !important; // Força preto para aparecer no fundo colorido
-  
-  .status-item span, .status-item small {
-    color: #000 !important;
-    font-weight: bold;
+  /* Efeito de piscar ao trocar de fase */
+  &.piscando {
+    --background: #ffffff !important;
+    background: #ffffff !important;
   }
 }
 
-/* NÚMERO CENTRAL */
+/* 2. ESTRUTURA PRINCIPAL DA INTERFACE */
+.interface-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  position: relative;
+  background: transparent !important;
+}
+
+/* 3. HEADER (BLOCO, EXERCÍCIO, ROUND) */
+.header-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: 10px;
+
+  .status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    small {
+      color: #000 !important;
+      font-weight: 900;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    span {
+      color: #000 !important;
+      font-weight: 900;
+      font-size: 1.8rem;
+    }
+
+    &.main {
+      flex: 3;
+      .nome-exercicio {
+        font-size: 1.6rem;
+        line-height: 1.1;
+        text-align: center;
+        display: block;
+        margin-top: 5px;
+      }
+    }
+  }
+}
+
+/* 4. BARRA DE PROGRESSO */
+.barra-progresso-container {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  border-radius: 10px;
+  width: 90%;
+  overflow: hidden;
+
+  .barra-preenchimento {
+    height: 100%;
+    background: #000;
+    transition: width 0.3s ease-in-out;
+  }
+}
+
+/* 5. CRONÔMETRO CENTRAL GIGANTE */
 .timer-main-frame {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  min-height: 0;
 }
 
 .clock-text {
-  font-size: 30vh !important;
-  color: #000 !important;
+  font-size: 38vh !important; // Tamanho ideal para não quebrar o layout
   font-weight: 900;
+  color: #000 !important;
+  line-height: 0.8;
   margin: 0;
+  font-family: 'Arial Black', sans-serif;
+  letter-spacing: -10px;
+  font-variant-numeric: tabular-nums;
 }
 
-/* BOTÕES DO RODAPÉ */
+/* 6. CONTROLES (RODAPÉ) */
 .footer-controls {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
+  z-index: 100;
 }
 
 .main-buttons-row {
   display: flex;
-  gap: 20px;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-modern {
-  width: 80px !important;
-  height: 80px !important;
+  width: 75px !important;
+  height: 75px !important;
   --border-radius: 50% !important;
-  --opacity: 1 !important; // Garante que não fique transparente
-  
+  --box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  margin: 0;
+
   &.green  { --background: #2dd36f !important; }
   &.orange { --background: #ffca28 !important; }
   &.light  { --background: #ffffff !important; }
 
   ion-icon { 
-    font-size: 40px !important; 
-    color: #000 !important; 
+    font-size: 35px !important; 
+    color: #000 !important;
     visibility: visible !important;
   }
 }
 
 .btn-config {
   --color: #000 !important;
-  margin-top: 10px;
+  margin-top: 15px;
   ion-icon { font-size: 40px !important; }
+}
+
+/* 7. TELA INICIAL (DESTRAVA ÁUDIO) */
+.tela-inicial {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+  .boas-vindas {
+    text-align: center;
+    h1 { color: #fff; font-size: 2.2rem; margin-bottom: 5px; }
+    p { color: #888; font-size: 1.1rem; margin-bottom: 30px; }
+
+    .btn-iniciar-gigante {
+      background: #2dd36f;
+      color: #000;
+      border: none;
+      padding: 20px 50px;
+      font-size: 1.6rem;
+      font-weight: bold;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 0 20px rgba(45, 211, 111, 0.3);
+      
+      &:active { transform: scale(0.95); }
+    }
+  }
+}
+
+/* AJUSTES PARA CELULAR EM PAISAGEM (DEITADO) */
+@media (orientation: landscape) {
+  .clock-text { font-size: 60vh !important; }
+  .header-status-row span { font-size: 1.4rem; }
 }
