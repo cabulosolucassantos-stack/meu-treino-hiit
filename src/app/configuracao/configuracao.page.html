@@ -13,13 +13,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <div class="global-section">
     <div class="input-item-nacional">
       <label>TEMPO DE PREPARAÇÃO (SEG)</label>
       <input type="number" [(ngModel)]="configService.tempoPreparacao" (ngModelChange)="salvarNoDispositivo()" placeholder="0">
     </div>
-    
     <div class="input-item-nacional">
       <label>BEEPS FINAIS (SEG)</label>
       <input type="number" [(ngModel)]="configService.tempoBeep" (ngModelChange)="salvarNoDispositivo()" placeholder="0">
@@ -28,7 +26,6 @@
 
   <div class="lista-blocos">
     <div class="bloco-card" *ngFor="let bloco of configService.blocos; let i = index">
-      
       <div class="bloco-header">
         <div class="header-left">
           <div class="toggle-icon" (click)="bloco.expandido = !bloco.expandido">
@@ -37,10 +34,9 @@
           </div>
           <input [(ngModel)]="bloco.nome" (blur)="salvarNoDispositivo()" class="input-nome-bloco">
         </div>
-
         <div class="bloco-btns">
           <button class="btn-icon-header" (click)="duplicarBloco(i)">
-            <svg viewBox="0 0 512 512" width="20" height="20" fill="white"><path d="M408 432H184a40 40 0 01-40-40V120a40 40 0 01184 80h224a40 40 0 0140 40v272a40 40 0 01-40 40z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M312 32H144a80 80 0 00-80 80v272" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+            <svg viewBox="0 0 512 512" width="20" height="20" fill="white"><path d="M408 432H184a40 40 0 01-40-40V120a40 40 0 0140-40h224a40 40 0 0140 40v272a40 40 0 01-40 40z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M312 32H144a80 80 0 00-80 80v272" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
           </button>
           <button class="btn-icon-header trash" (click)="removerBloco(i)">
             <svg viewBox="0 0 512 512" width="20" height="20" fill="#ff4d4d"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h192c17.6 0 31.05-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/><path d="M192 112V72h128v40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
@@ -71,11 +67,9 @@
             </tr>
           </tbody>
         </table>
-
         <div class="add-round-buttons">
           <button class="btn-nacional-add" (click)="addRound(i, 10)">+ ADICIONAR ROUND</button>
         </div>
-
         <div class="descanso-container">
           <label>DESCANSO PÓS-BLOCO (SEG)</label>
           <input type="number" [(ngModel)]="bloco.descansoPosBloco" (ngModelChange)="salvarNoDispositivo()" placeholder="0">
@@ -88,7 +82,6 @@
     <button class="btn-nacional-bloco" (click)="novoBloco()">+ NOVO BLOCO</button>
     <button *ngIf="configService.blocos.length > 0" class="btn-nacional-limpar" (click)="limparTreinoCompleto()">APAGAR TODO O TREINO</button>
   </div>
-
 </ion-content>
 
 <ion-footer>
