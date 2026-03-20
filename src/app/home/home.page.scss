@@ -1,25 +1,26 @@
-/* 1. FUNDOS DINÂMICOS */
-.bg-acao { --background: #db0909 !important; transition: 0.5s; }
-.bg-recuperacao { --background: #f3d008 !important; transition: 0.5s; }
-.bg-preparacao { --background: #5dade2 !important; transition: 0.5s; }
-.bg-descanso-bloco { --background: #2ecc71 !important; transition: 0.5s; }
+:host {
+  .bg-preparacao { --background: #ffca28 !important; background: #ffca28 !important; }
+  .bg-acao { --background: #2dd36f !important; background: #2dd36f !important; }
+  .bg-recuperacao { --background: #eb445a !important; background: #eb445a !important; }
+  .bg-descanso-bloco { --background: #3880ff !important; background: #3880ff !important; }
 
-/* Efeito de Flash Branco */
-.piscando {
-  --background: #ffffff !important;
-  transition: 0.1s ease-in-out;
+  .interface-container {
+    background: transparent !important;
+  }
 }
 
 ion-content {
-  --background: transparent;
-  height: 100dvh;
+  &.bg-preparacao { --background: #ffca28; }
+  &.bg-acao { --background: #2dd36f; }
+  &.bg-recuperacao { --background: #eb445a; }
+  &.bg-descanso-bloco { --background: #3880ff; }
 }
 
-/* 2. ESTRUTURA PRINCIPAL */
 .interface-container {
+  background: transparent !important;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; // Garante Topo, Meio e Fim distribuídos
+  justify-content: space-between;
   height: 100dvh;
   width: 100vw;
   padding: 10px 20px;
@@ -32,18 +33,12 @@ ion-content {
   }
 }
 
-/* 3. HEADER - STATUS EM LINHA */
 .header-status-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 15px 10px;
   width: 100%;
-  
-  // Analisar para excluir: fundo preto e bordas comentados
-  // background: #000000; 
-  // border-radius: 12px;
-  // border: 1px solid #333;
 
   .status-item {
     display: flex;
@@ -69,22 +64,19 @@ ion-content {
     &.main {
       flex: 5; 
       padding: 0 10px;
-      
       span {
         font-size: 2.2rem;
         line-height: 1.1;
         text-align: center;
         word-break: break-word;
-        white-space: normal; 
       }
     }
   }
 }
 
-/* 4. BARRA DE PROGRESSO */
 .barra-progresso-container {
   height: 8px;
-  background: #1a1a1a;
+  background: rgba(0,0,0,0.1);
   margin: 5px 0;
   border-radius: 4px;
   width: 90%;
@@ -97,9 +89,8 @@ ion-content {
   }
 }
 
-/* 5. CRONÔMETRO CENTRAL GIGANTE */
 .timer-main-frame {
-  flex: 1; // Ocupa o espaço central disponível
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,37 +98,28 @@ ion-content {
 }
 
 .clock-text {
-  font-size: 100vh; // Reduzido de 70 para 50 para garantir que caibam os botões
+  font-size: 40vh; // Ajustado para dar espaço aos botões
   font-weight: 900;
   color: #000;
   line-height: 1;
   font-family: 'Arial Black', sans-serif;
   text-align: center;
   margin: 0;
-  
-  /* Ajuste de proximidade dos números */
-  letter-spacing: -40px;
-  text-indent: -40px;
-  transform: translateX(-10px) !important;
-
+  letter-spacing: -15px;
   font-variant-numeric: tabular-nums;
   user-select: none; 
-  touch-action: manipulation; 
 
   @media (orientation: landscape) {
-    font-size: 65dvh !important;
-    letter-spacing: -25px !important;
-    text-indent: -25px;
+    font-size: 60dvh !important;
   }
 }
 
-/* 6. CONTROLES (BOTÕES) */
 .footer-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
   z-index: 10;
 }
 
@@ -148,37 +130,31 @@ ion-content {
 }
 
 .btn-modern {
-  width: 75px !important;
-  height: 75px !important;
-  border-radius: 50% !important;
+  width: 80px !important;
+  height: 80px !important;
   --border-radius: 50%;
-  --padding-start: 0;
-  --padding-end: 0;
+  margin: 0;
   
-  &.green  { --background: #af363604; --color: #000; }
-  &.orange { --background: #275f9400; --color: #000; }
-  &.light  { --background: #756f6f00; --color: #000; }
+  // Cores sólidas e visíveis
+  &.green  { --background: #2dd36f; --color: #000; } 
+  &.orange { --background: #ffca28; --color: #000; } 
+  &.light  { --background: #ffffff; --color: #000; } 
 
-  ion-icon { font-size: 35px !important; }
+  ion-icon { 
+    font-size: 38px !important; 
+    visibility: visible !important;
+  }
 }
 
 .btn-config {
   --color: #000000; 
-  margin-top: 5px;
+  margin-top: 15px;
   ion-icon { font-size: 45px !important; }
 }
 
-/* AJUSTES DE TELA GRANDE / PC */
-@media (min-width: 992px) {
-  .interface-container { gap: 20px !important; }
-  .clock-text { font-size: 45vh !important; }
-}
 .tela-inicial {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0; width: 100%; height: 100%;
   z-index: 1000;
   background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
   display: flex;
@@ -187,14 +163,13 @@ ion-content {
   text-align: center;
 
   .boas-vindas {
-    h1 { color: #fff; font-size: 2.5rem; margin-bottom: 10px; }
+    h1 { color: #fff; font-size: 2.5rem; }
     p { color: #888; margin-bottom: 30px; }
   }
 
   .btn-iniciar-gigante {
     background: #2dd36f;
     color: #000;
-    border: none;
     padding: 25px 60px;
     font-size: 1.8rem;
     font-weight: bold;
@@ -203,9 +178,5 @@ ion-content {
     align-items: center;
     gap: 15px;
     box-shadow: 0 0 30px rgba(45, 211, 111, 0.4);
-    transition: transform 0.2s;
-
-    &:active { transform: scale(0.95); }
-    ion-icon { font-size: 2rem; }
   }
 }

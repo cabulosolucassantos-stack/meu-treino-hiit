@@ -27,7 +27,7 @@ export class HomePage implements OnInit {
   public tempo: number = 0;
   public timer: any;
   public treinando: boolean = false;
-  public treinoIniciado: boolean = false; // NOVA: Controla se saiu da tela inicial
+  public treinoIniciado: boolean = false; 
   public telaPiscando: boolean = false;
   public fase: 'PREPARAÇÃO' | 'AÇÃO' | 'RECUPERAÇÃO' | 'DESCANSO_BLOCO' = 'PREPARAÇÃO';
   public tempoInicial: number = 0;
@@ -44,8 +44,17 @@ export class HomePage implements OnInit {
   public totalEtapasFila: number = 0; 
   public etapaAtualFila: number = 0; 
 
-  constructor(private router: Router, public configService: ConfigService) {
-    addIcons({ play, pause, refresh, 'settings-outline': settingsOutline });
+  constructor(
+    private router: Router, 
+    public configService: ConfigService
+  ) {
+    // Mapeamento explícito para evitar erro no deploy da Vercel
+    addIcons({ 
+      'play': play, 
+      'pause': pause, 
+      'refresh': refresh, 
+      'settings-outline': settingsOutline 
+    });
   }
 
   ngOnInit() {
@@ -65,10 +74,9 @@ export class HomePage implements OnInit {
     this.fila = []; 
     this.progressoTotal = 0;
     this.etapaAtualFila = 0;
-    this.treinoIniciado = false; // Volta para a tela de play ao resetar
+    this.treinoIniciado = false; 
   }
 
-  // GATILHO INICIAL PARA DESTRAVAR ÁUDIO
   public iniciarTreinoPelaPrimeiraVez() {
     this.treinoIniciado = true;
     this.iniciarTreino();
