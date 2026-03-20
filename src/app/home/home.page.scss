@@ -1,144 +1,85 @@
-/* 1. CORES DE FUNDO */
-:host {
-  .bg-preparacao { --background: #ffca28 !important; background: #ffca28 !important; }
-  .bg-acao { --background: #2dd36f !important; background: #2dd36f !important; }
-  .bg-recuperacao { --background: #eb445a !important; background: #eb445a !important; }
-  .bg-descanso-bloco { --background: #3880ff !important; background: #3880ff !important; }
-
-  .interface-container {
-    background: transparent !important;
-  }
-}
-
+/* 1. FORÇAR O CONTEÚDO A OCUPAR A TELA TODA */
 ion-content {
-  &.bg-preparacao { --background: #ffca28; }
-  &.bg-acao { --background: #2dd36f; }
-  &.bg-recuperacao { --background: #eb445a; }
-  &.bg-descanso-bloco { --background: #3880ff; }
+  --background: #000;
+  height: 100vh !important;
+  display: block;
+  
+  &.bg-preparacao { --background: #ffca28 !important; }
+  &.bg-acao { --background: #2dd36f !important; }
+  &.bg-recuperacao { --background: #eb445a !important; }
+  &.bg-descanso-bloco { --background: #3880ff !important; }
 }
 
-/* 2. ESTRUTURA PRINCIPAL */
+/* 2. CONTAINER DA INTERFACE */
 .interface-container {
   display: flex;
   flex-direction: column;
-  height: 100%; // Usa a altura total disponível
+  height: 100vh; /* Ocupa a altura total da janela */
   width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  justify-content: space-between; // Distribui topo, meio e botões
-  align-items: center;
-  overflow: hidden; 
-}
-
-/* 3. HEADER */
-.header-status-row {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  padding: 10px 0;
-
-  .status-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-
-    small { color: #000; font-weight: 900; letter-spacing: 2px; }
-    span { color: #000; font-weight: 900; font-size: 2rem; }
-
-    &.main span { font-size: 1.8rem; text-align: center; }
-  }
-}
-
-/* 4. BARRA DE PROGRESSO */
-.barra-progresso-container {
-  height: 6px;
-  background: rgba(0,0,0,0.1);
-  width: 90%;
-  border-radius: 10px;
+  position: relative;
   overflow: hidden;
-
-  .barra-preenchimento {
-    height: 100%;
-    background: #000;
-    transition: width 0.3s;
-  }
+  box-sizing: border-box;
 }
 
-/* 5. O CRONÔMETRO (AQUI ESTAVA O ERRO) */
+/* 3. TIMER CENTRAL (Reduzido para não expulsar os botões) */
 .timer-main-frame {
-  flex: 1; // Ocupa o espaço que sobrar entre o topo e o rodapé
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-height: 50vh; // Garante que nunca passe de metade da tela
+  padding-bottom: 120px; /* Abre espaço para os botões que estarão fixos */
 }
 
 .clock-text {
-  font-size: 35vh; // Reduzido para não expulsar os botões
+  font-size: 35vh !important; /* Tamanho seguro */
   font-weight: 900;
   color: #000;
-  line-height: 0.8;
   margin: 0;
-  font-family: 'Arial Black', sans-serif;
-  letter-spacing: -10px; // Espaçamento negativo moderado
+  letter-spacing: -10px;
 }
 
-/* 6. CONTROLES (RODAPÉ) */
+/* 4. CONTROLES FIXOS NO RODAPÉ */
 .footer-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  padding-bottom: 30px; /* Distância do fim da tela */
+  background: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 20px; // Garante que não fique colado no fim da tela
+  z-index: 999;
 }
 
 .main-buttons-row {
   display: flex;
-  gap: 30px;
-  margin-bottom: 15px;
+  gap: 20px;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.1); /* Fundo sutil para destacar os botões */
+  padding: 10px 20px;
+  border-radius: 50px;
 }
 
 .btn-modern {
   width: 70px !important;
   height: 70px !important;
-  --border-radius: 50%;
+  --border-radius: 50% !important;
   margin: 0;
 
-  &.green  { --background: #2dd36f; --color: #000; }
-  &.orange { --background: #ffca28; --color: #000; }
-  &.light  { --background: #ffffff; --color: #000; }
+  &.green  { --background: #2dd36f !important; --color: #000; }
+  &.orange { --background: #ffca28 !important; --color: #000; }
+  &.light  { --background: #ffffff !important; --color: #000; }
 
-  ion-icon { font-size: 32px !important; }
+  ion-icon { 
+    font-size: 35px !important; 
+    visibility: visible !important;
+    color: #000 !important;
+  }
 }
 
 .btn-config {
-  --color: #000;
-  ion-icon { font-size: 35px !important; }
-}
-
-/* TELA INICIAL (DESTRAVA SOM) */
-.tela-inicial {
-  position: absolute;
-  top:0; left:0; width:100%; height:100%;
-  background: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-
-  .boas-vindas {
-    text-align: center;
-    h1 { color: #fff; font-size: 2rem; }
-    p { color: #666; }
-    .btn-iniciar-gigante {
-      background: #2dd36f;
-      color: #000;
-      padding: 20px 40px;
-      font-size: 1.5rem;
-      border-radius: 50px;
-      font-weight: bold;
-      margin-top: 20px;
-    }
-  }
+  --color: #000 !important;
+  margin-top: 10px;
+  ion-icon { font-size: 40px !important; }
 }
