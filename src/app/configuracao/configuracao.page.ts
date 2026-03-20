@@ -48,6 +48,7 @@ export class ConfiguracaoPage implements OnInit {
   }
 
   // --- PERSISTÊNCIA ---
+  
   salvarNoDispositivo() {
     // Força a conversão para garantir que o Timer não receba uma String
     const preparacao = Number(this.configService.tempoPreparacao);
@@ -61,16 +62,32 @@ export class ConfiguracaoPage implements OnInit {
   }
 
   carregarTreino() {
-    const blocosSalvos = localStorage.getItem('treino_hiit_config');
-    const preparacaoSalva = localStorage.getItem('tempo_preparacao');
-    const beepSalvo = localStorage.getItem('tempo_beep');
+    try {
+      const blocosSalvos = localStorage.getItem('treino_hiit_config');
+      const preparacaoSalva = localStorage.getItem('tempo_preparacao');
+      const beepSalvo = localStorage.getItem('tempo_beep');
 
-    if (blocosSalvos) this.configService.blocos = JSON.parse(blocosSalvos);
-    if (preparacaoSalva) this.configService.tempoPreparacao = Number(preparacaoSalva);
-    if (beepSalvo) this.configService.tempoBeep = Number(beepSalvo);
+      // Só sobrescreve se realmente houver algo salvo, senão mantém o padrão do ConfigService
+      if (blocosSalvos && blocosSalvos !== '[]' && blocosSalvos !== 'null') {
+        this.configService.blocos = JSON.parse(blocosSalvos);
+      }
+      
+      if (preparacaoSalva !== null) {
+        this.configService.tempoPreparacao = Number(preparacaoSalva);
+      }
+      
+      if (beepSalvo !== null) {
+        this.configService.tempoBeep = Number(beepSalvo);
+      }
+
+      console.log('Dados carregados com sucesso no dispositivo');
+    } catch (error) {
+      console.error('Erro ao ler localStorage:', error);
+    }
   }
 
   // --- LÓGICA DE EDIÇÃO ---
+
   novoBloco() {
     this.configService.blocos.push({
       nome: `Bloco ${this.configService.blocos.length + 1}`,
