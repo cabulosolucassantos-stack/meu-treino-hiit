@@ -6,14 +6,8 @@ import { ConfigService } from '../services/config';
 import { Router } from '@angular/router';
 import { addIcons } from 'ionicons'; 
 import { 
-  trash, 
-  trashBin, 
-  copy, 
-  add, 
-  closeCircle, 
-  chevronUp, 
-  chevronDown,
-  chevronForward
+  trash, trashBin, copy, add, closeCircle, 
+  chevronUp, chevronDown, chevronForward 
 } from 'ionicons/icons'; 
 
 @Component({
@@ -30,16 +24,10 @@ export class ConfiguracaoPage implements OnInit {
     private router: Router,
     private alertController: AlertController
   ) {
-    // Registro dos ícones para garantir a renderização no modo Standalone
     addIcons({ 
-      'trash': trash, 
-      'trash-bin': trashBin, 
-      'copy': copy, 
-      'add': add, 
-      'close-circle': closeCircle, 
-      'chevron-up': chevronUp, 
-      'chevron-down': chevronDown,
-      'chevron-forward': chevronForward
+      'trash': trash, 'trash-bin': trashBin, 'copy': copy, 
+      'add': add, 'close-circle': closeCircle, 'chevron-up': chevronUp, 
+      'chevron-down': chevronDown, 'chevron-forward': chevronForward 
     });
   }
 
@@ -47,18 +35,13 @@ export class ConfiguracaoPage implements OnInit {
     this.carregarTreino();
   }
 
-  // --- PERSISTÊNCIA ---
-  
   salvarNoDispositivo() {
-    // Força a conversão para garantir que o Timer não receba uma String
     const preparacao = Number(this.configService.tempoPreparacao);
     const beep = Number(this.configService.tempoBeep);
 
     localStorage.setItem('treino_hiit_config', JSON.stringify(this.configService.blocos));
     localStorage.setItem('tempo_preparacao', preparacao.toString());
     localStorage.setItem('tempo_beep', beep.toString());
-    
-    console.log('Configurações salvas:', { preparacao, beep });
   }
 
   carregarTreino() {
@@ -67,27 +50,17 @@ export class ConfiguracaoPage implements OnInit {
       const preparacaoSalva = localStorage.getItem('tempo_preparacao');
       const beepSalvo = localStorage.getItem('tempo_beep');
 
-      // Só sobrescreve se realmente houver algo salvo, senão mantém o padrão do ConfigService
       if (blocosSalvos && blocosSalvos !== '[]' && blocosSalvos !== 'null') {
         this.configService.blocos = JSON.parse(blocosSalvos);
       }
-      
-      if (preparacaoSalva !== null) {
-        this.configService.tempoPreparacao = Number(preparacaoSalva);
-      }
-      
-      if (beepSalvo !== null) {
-        this.configService.tempoBeep = Number(beepSalvo);
-      }
-
-      console.log('Dados carregados com sucesso no dispositivo');
+      if (preparacaoSalva !== null) this.configService.tempoPreparacao = Number(preparacaoSalva);
+      if (beepSalvo !== null) this.configService.tempoBeep = Number(beepSalvo);
     } catch (error) {
       console.error('Erro ao ler localStorage:', error);
     }
   }
 
   // --- LÓGICA DE EDIÇÃO ---
-
   novoBloco() {
     this.configService.blocos.push({
       nome: `Bloco ${this.configService.blocos.length + 1}`,
@@ -99,11 +72,7 @@ export class ConfiguracaoPage implements OnInit {
   }
 
   addRound(blocoIndex: number, pausaPadrao: number) {
-    this.configService.blocos[blocoIndex].rounds.push({
-      exercicio: '',
-      esforco: 30,
-      pausa: pausaPadrao
-    });
+    this.configService.blocos[blocoIndex].rounds.push({ exercicio: '', esforco: 30, pausa: pausaPadrao });
     this.salvarNoDispositivo();
   }
 
@@ -127,16 +96,10 @@ export class ConfiguracaoPage implements OnInit {
   async limparTreinoCompleto() {
     const alert = await this.alertController.create({
       header: 'Limpar Treino?',
-      message: 'Isso apagará todos os blocos configurados. Tem certeza?',
+      message: 'Isso apagará todos os blocos configurados.',
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Limpar Tudo',
-          handler: () => {
-            this.configService.blocos = [];
-            this.salvarNoDispositivo();
-          }
-        }
+        { text: 'Limpar Tudo', handler: () => { this.configService.blocos = []; this.salvarNoDispositivo(); } }
       ]
     });
     await alert.present();
@@ -144,7 +107,6 @@ export class ConfiguracaoPage implements OnInit {
 
   salvar() {
     this.salvarNoDispositivo();
-    alert('Preset Salvo!');
     this.router.navigate(['/home']);
   }
 
