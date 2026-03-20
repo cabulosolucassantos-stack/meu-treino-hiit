@@ -1,50 +1,60 @@
+// Paleta de Cores
 $bg-dark: #0f172a;
 $card-bg: #1e293b;
 $accent-blue: #38bdf8;
 $accent-green: #22c55e;
+$text-dim: #94a3b8;
 
+// 1. CONFIGURAÇÃO DO CONTEÚDO (LIBERAR ROLAGEM)
 ion-content {
-  --background: #0f172a;
+  --background: #{$bg-dark};
+  height: 100% !important;
+  --overflow: scroll;
+  overflow-y: auto;
 }
 
-// 1. SEÇÃO GLOBAL
+// 2. SEÇÃO GLOBAL (TEMPO DE PREPARAÇÃO E BEEPS)
 .global-section {
-  background: #1e293b;
+  background: #{$card-bg};
   border-radius: 12px;
-  margin: 10px;
-  padding: 5px;
-  border-left: 4px solid $accent-blue;
+  margin: 15px;
+  padding: 15px;
+  border-left: 4px solid #38bdf8;
 
   .input-item {
     --background: transparent;
-    --color: white;
-    --padding-start: 10px;
-    
+    --padding-start: 0;
+    margin-bottom: 15px;
+
     ion-label {
-      color: $accent-blue !important;
+      color: #38bdf8 !important;
       font-weight: 800;
       font-size: 0.8rem !important;
-      margin-bottom: 10px;
+      margin-bottom: 8px !important;
+      transform: none !important; // Evita que o label flutue e suma
     }
+
     ion-input {
-      --color: #ffffff;
-      font-size: 1.2rem;
-      font-weight: 700;
-      background: rgba(0,0,0,0.2);
+      background: #{$bg-dark} !important;
+      --color: #ffffff !important;
+      border: 1px solid #334155 !important;
       border-radius: 8px;
-      margin-top: 5px;
-      padding-left: 10px !important;
+      height: 45px;
+      --padding-start: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
     }
   }
 }
 
-// 2. CARD DO BLOCO
+// 3. CARD DO BLOCO
 .bloco-card {
-  background: $card-bg;
+  background: #{$card-bg};
   border-radius: 12px;
-  margin: 10px;
+  margin: 15px;
   overflow: hidden;
   border: 1px solid #334155;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 
   .bloco-header {
     background: #2563eb;
@@ -77,14 +87,14 @@ ion-content {
   }
 }
 
-// 3. TABELA DE ROUNDS (REFEITA PARA VISIBILIDADE)
+// 4. TABELA DE ROUNDS
 .rounds-table {
   width: 100%;
   border-collapse: collapse;
   
   thead th {
-    background: #0f172a;
-    color: $accent-blue;
+    background: #{$bg-dark};
+    color: #{$accent-blue};
     font-size: 0.7rem;
     padding: 10px 5px;
     text-align: center;
@@ -92,34 +102,38 @@ ion-content {
 
   tbody td {
     padding: 5px;
-    background: #1e293b;
+    background: #{$card-bg};
     border-bottom: 1px solid #334155;
 
     .td-input-text {
       width: 100%;
-      background: #0f172a;
+      background: #{$bg-dark};
       border: 1px solid #334155;
       color: white;
       padding: 8px;
       border-radius: 6px;
+      outline: none;
     }
 
     .td-input-num {
       width: 50px;
-      background: #0f172a;
+      background: #{$bg-dark};
       border: 1px solid #334155;
       color: white;
       padding: 8px 0;
       text-align: center;
       border-radius: 6px;
+      outline: none;
     }
   }
 }
 
+// 5. BOTÕES DE AÇÃO INTERNOS
 .add-round-buttons {
   padding: 15px;
   display: flex;
   justify-content: center;
+  background: rgba(0,0,0,0.1);
   
   ion-button {
     --background: #334155;
@@ -127,39 +141,275 @@ ion-content {
     --border-radius: 8px;
     font-weight: 700;
     width: 100%;
+    margin: 0;
   }
 }
 
+// 6. DESCANSO PÓS-BLOCO
 .descanso-container {
-  padding: 10px 15px;
-  background: #0f172a;
-  
+  padding: 15px;
+  background: #161e2e;
+  border-top: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
   ion-label {
-    color: #94a3b8;
-    font-size: 0.7rem;
+    color: #{$text-dim};
+    font-size: 0.75rem;
     font-weight: 700;
+    text-transform: uppercase;
   }
+
   ion-input {
-    --color: $accent-blue;
+    background: #{$bg-dark} !important;
+    --color: #{$accent-blue} !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px;
+    height: 40px;
     font-weight: 800;
+    --padding-start: 10px;
   }
 }
 
-// 4. AÇÕES FINAIS
+// 7. AÇÕES FINAIS (NOVO BLOCO / APAGAR TUDO)
 .acoes-finais {
-  padding: 10px 15px;
+  padding: 10px 15px 120px 15px; // Padding inferior para não esconder atrás do footer
   
   .btn-novo-bloco {
-    --background: $accent-blue;
-    --color: #0f172a;
+    --background: #{$accent-blue};
+    --color: #{$bg-dark};
     --border-radius: 12px;
     height: 55px;
     font-weight: 900;
+    margin-top: 15px;
+  }
+
+  ion-button[color="danger"] {
+    --color: #64748b; // Cinza discreto
+    font-weight: 600;
+    text-decoration: underline;
+    margin-top: 10px;
   }
 }
 
+// 8. RODAPÉ (FOOTER)
 ion-footer ion-toolbar {
-  --background: #0f172a;
+  --background: #{$bg-dark};
   --padding-top: 10px;
   --padding-bottom: 10px;
+  border-top: 1px solid #334155;
+
+  ion-button {
+    --border-radius: 10px;
+    font-weight: 800;
+    height: 45px;
+  }
+}// Paleta de Cores
+$bg-dark: #0f172a;
+$card-bg: #1e293b;
+$accent-blue: #38bdf8;
+$accent-green: #22c55e;
+$text-dim: #94a3b8;
+
+// 1. CONFIGURAÇÃO DO CONTEÚDO (LIBERAR ROLAGEM)
+ion-content {
+  --background: #{$bg-dark};
+  height: 100% !important;
+  --overflow: scroll;
+  overflow-y: auto;
+}
+
+// 2. SEÇÃO GLOBAL (TEMPO DE PREPARAÇÃO E BEEPS)
+.global-section {
+  background: #{$card-bg};
+  border-radius: 12px;
+  margin: 15px;
+  padding: 15px;
+  border-left: 4px solid #38bdf8;
+
+  .input-item {
+    --background: transparent;
+    --padding-start: 0;
+    margin-bottom: 15px;
+
+    ion-label {
+      color: #38bdf8 !important;
+      font-weight: 800;
+      font-size: 0.8rem !important;
+      margin-bottom: 8px !important;
+      transform: none !important; // Evita que o label flutue e suma
+    }
+
+    ion-input {
+      background: #{$bg-dark} !important;
+      --color: #ffffff !important;
+      border: 1px solid #334155 !important;
+      border-radius: 8px;
+      height: 45px;
+      --padding-start: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+// 3. CARD DO BLOCO
+.bloco-card {
+  background: #{$card-bg};
+  border-radius: 12px;
+  margin: 15px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+
+  .bloco-header {
+    background: #2563eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .toggle-icon {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .input-nome-bloco {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: 800;
+      font-size: 1.1rem;
+      width: 100%;
+      outline: none;
+    }
+  }
+}
+
+// 4. TABELA DE ROUNDS
+.rounds-table {
+  width: 100%;
+  border-collapse: collapse;
+  
+  thead th {
+    background: #{$bg-dark};
+    color: #{$accent-blue};
+    font-size: 0.7rem;
+    padding: 10px 5px;
+    text-align: center;
+  }
+
+  tbody td {
+    padding: 5px;
+    background: #{$card-bg};
+    border-bottom: 1px solid #334155;
+
+    .td-input-text {
+      width: 100%;
+      background: #{$bg-dark};
+      border: 1px solid #334155;
+      color: white;
+      padding: 8px;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .td-input-num {
+      width: 50px;
+      background: #{$bg-dark};
+      border: 1px solid #334155;
+      color: white;
+      padding: 8px 0;
+      text-align: center;
+      border-radius: 6px;
+      outline: none;
+    }
+  }
+}
+
+// 5. BOTÕES DE AÇÃO INTERNOS
+.add-round-buttons {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  background: rgba(0,0,0,0.1);
+  
+  ion-button {
+    --background: #334155;
+    --color: white;
+    --border-radius: 8px;
+    font-weight: 700;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+// 6. DESCANSO PÓS-BLOCO
+.descanso-container {
+  padding: 15px;
+  background: #161e2e;
+  border-top: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  ion-label {
+    color: #{$text-dim};
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  ion-input {
+    background: #{$bg-dark} !important;
+    --color: #{$accent-blue} !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px;
+    height: 40px;
+    font-weight: 800;
+    --padding-start: 10px;
+  }
+}
+
+// 7. AÇÕES FINAIS (NOVO BLOCO / APAGAR TUDO)
+.acoes-finais {
+  padding: 10px 15px 120px 15px; // Padding inferior para não esconder atrás do footer
+  
+  .btn-novo-bloco {
+    --background: #{$accent-blue};
+    --color: #{$bg-dark};
+    --border-radius: 12px;
+    height: 55px;
+    font-weight: 900;
+    margin-top: 15px;
+  }
+
+  ion-button[color="danger"] {
+    --color: #64748b; // Cinza discreto
+    font-weight: 600;
+    text-decoration: underline;
+    margin-top: 10px;
+  }
+}
+
+// 8. RODAPÉ (FOOTER)
+ion-footer ion-toolbar {
+  --background: #{$bg-dark};
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  border-top: 1px solid #334155;
+
+  ion-button {
+    --border-radius: 10px;
+    font-weight: 800;
+    height: 45px;
+  }
 }
