@@ -15,25 +15,15 @@
 <ion-content class="ion-padding">
 
   <div class="global-section">
-    <ion-item lines="none" class="input-item">
-      <ion-label position="stacked">TEMPO DE PREPARAÇÃO (SEG)</ion-label>
-      <ion-input 
-        type="number" 
-        [(ngModel)]="configService.tempoPreparacao" 
-        (ngModelChange)="salvarNoDispositivo()"
-        placeholder="Ex: 10">
-      </ion-input>
-    </ion-item>
+    <div class="input-item-nacional">
+      <label>TEMPO DE PREPARAÇÃO (SEG)</label>
+      <input type="number" [(ngModel)]="configService.tempoPreparacao" (ngModelChange)="salvarNoDispositivo()" placeholder="0">
+    </div>
     
-    <ion-item lines="none" class="input-item">
-      <ion-label position="stacked">BEEPS FINAIS (SEG)</ion-label>
-      <ion-input 
-        type="number" 
-        [(ngModel)]="configService.tempoBeep" 
-        (ngModelChange)="salvarNoDispositivo()"
-        placeholder="Ex: 3">
-      </ion-input>
-    </ion-item>
+    <div class="input-item-nacional">
+      <label>BEEPS FINAIS (SEG)</label>
+      <input type="number" [(ngModel)]="configService.tempoBeep" (ngModelChange)="salvarNoDispositivo()" placeholder="0">
+    </div>
   </div>
 
   <div class="lista-blocos">
@@ -97,13 +87,8 @@
         </div>
 
         <div class="descanso-container">
-          <ion-label>DESCANSO PÓS-BLOCO (SEG)</ion-label>
-          <ion-input 
-            type="number" 
-            [(ngModel)]="bloco.descansoPosBloco" 
-            (ngModelChange)="salvarNoDispositivo()"
-            placeholder="Ex: 60">
-          </ion-input>
+          <label>DESCANSO PÓS-BLOCO (SEG)</label>
+          <input type="number" [(ngModel)]="bloco.descansoPosBloco" (ngModelChange)="salvarNoDispositivo()" placeholder="0">
         </div>
       </div>
     </div>
