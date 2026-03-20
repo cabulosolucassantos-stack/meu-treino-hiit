@@ -44,6 +44,8 @@ export class HomePage implements OnInit {
   public totalEtapasFila: number = 0; 
   public etapaAtualFila: number = 0; 
 
+  private audioCtx: any;
+
   constructor(
     private router: Router, 
     public configService: ConfigService
@@ -52,57 +54,58 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    // Inicialização padrão
+    this.atualizarConfiguracoesLocais();
   }
 
-  // EVENTO CRÍTICO: Roda toda vez que a tela aparece
   ionViewWillEnter() {
     if (!this.treinando) {
       this.atualizarConfiguracoesLocais();
     }
   }
 
-  public atualizarConfiguracoesLocais() {
+  // --- LOGICA DE SINCRONIZAÇÃO E CACHE ---
+
+  atualizarConfiguracoesLocais() {
+    this.fila = []; 
+    this.etapaAtualFila = 0;
+
     const blocosSalvos = localStorage.getItem('treino_hiit_config');
     const preparacaoSalva = localStorage.getItem('tempo_preparacao');
     const beepSalvo = localStorage.getItem('tempo_beep');
 
-    // 1. Sincroniza o Service com o Storage (Garante que os dados novos entrem no app)
-    if (blocosSalvos && blocosSalvos !== '[]') {
-      this.configService.blocos = JSON.parse(blocosSalvos);
+    if (blocosSalvos && blocosSalvos !== 'null') {
+      try {
+        this.configService.blocos = JSON.parse(blocosSalvos);
+        this.configService.tempoPreparacao = Number(preparacaoSalva) || 10;
+        this.configService.tempoBeep = Number(beepSalvo) || 3;
+
+        this.tempoInicial = this.configService.tempoPreparacao;
+        this.tempo = this.tempoInicial;
+        this.fase = 'PREPARAÇÃO';
+        this.rotuloAtual = 'Prepare-se!';
+        
+        this.gerarSequencia(); 
+        console.log('Cache verificado e treino regenerado.');
+      } catch (e) {
+        console.error("Erro no cache, resetando storage...", e);
+        localStorage.clear();
+      }
     }
-    if (preparacaoSalva) this.configService.tempoPreparacao = Number(preparacaoSalva);
-    if (beepSalvo) this.configService.tempoBeep = Number(beepSalvo);
-
-    // 2. Reseta o estado visual para o início
-    this.treinoIniciado = false;
-    this.fase = 'PREPARAÇÃO';
-    this.tempoInicial = Number(this.configService.tempoPreparacao) || 10;
-    this.tempo = this.tempoInicial;
-    this.rotuloAtual = 'Prepare-se!';
-    this.progressoTotal = 0;
-    this.etapaAtualFila = 0;
-
-    // 3. REGERA A FILA: Isso é o que faz o treino passar da preparação para o exercício
-    this.gerarSequencia();
-    
-    console.log('Home sincronizada e fila gerada!');
   }
+
+  // --- CONTROLE DO TREINO ---
 
   public iniciarTreinoPelaPrimeiraVez() {
     this.treinoIniciado = true;
     this.iniciarTreino();
   }
 
-  // Lógica do Timer (Play / Resume)
   iniciarTreino() {
     if (this.treinando) return; 
 
-    // Se estiver no exato começo, garante que os dados estão frescos
     if (this.tempo === this.tempoInicial && this.etapaAtualFila === 0) {
       this.atualizarStatusEtapa();
-      const etapaAtiva = this.fila[0];
-      if (etapaAtiva) this.falar(etapaAtiva.exercicio);
+      if (this.fila[0]) this.falar(this.fila[0].exercicio);
       this.ativarWakeLock();
     }
 
@@ -120,57 +123,117 @@ export class HomePage implements OnInit {
     }, 1000);
   }
 
-  public gerarSequencia() {
-    this.fila = [];
+  proximaEtapa() {
+    if (this.timer) clearInterval(this.timer);
+    this.treinando = false;
+
+    this.fila.shift(); 
+    this.etapaAtualFila++;
+
+    // O SEGREDO: Delay de 500ms para o Android processar a troca de fase
+    setTimeout(() => {
+      if (this.fila.length > 0) {
+        this.atualizarStatusEtapa();
+        
+        if (isNaN(this.tempo) || this.tempo <= 0) {
+          this.proximaEtapa();
+          return;
+        }
+
+        const frase = this.fase === 'AÇÃO' ? `Iniciar ${this.rotuloAtual}` : "Respire";
+        this.falar(frase);
+        
+        this.iniciarTreino();
+      } else {
+        this.finalizarTreino();
+      }
+    }, 500); 
+  }
+
+  // --- UTILITÁRIOS: VOZ E SOM ---
+
+  public falar(texto: string) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+
+      setTimeout(() => {
+        const msg = new SpeechSynthesisUtterance(texto);
+        msg.lang = 'pt-BR';
+        msg.rate = 1.2; 
+        msg.pitch = 1.0;
+        msg.volume = 1.0;
+        window.speechSynthesis.speak(msg);
+      }, 50);
+    }
+  }
+
+  private verificarSom(tempoSegundos: number) {
+    if (tempoSegundos === 5) {
+      const proximaAcao = this.fila.find((item, index) => index > 0 && item.fase === 'AÇÃO');
+      if (proximaAcao) this.falar(`Próximo: ${proximaAcao.exercicio}`);
+    }
+
+    if (tempoSegundos <= 3 && tempoSegundos >= 1) {
+      this.tocarBeep(600, 0.1, 'triangle');
+      this.piscarTela();
+    } else if (tempoSegundos === 0) {
+      this.tocarBeep(400, 0.8, 'square');
+      this.piscarTela();
+    }
+  }
+
+  private tocarBeep(freq: number, dur: number, tipo: any) {
+    if (!this.audioCtx) this.audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    if (this.audioCtx.state === 'suspended') this.audioCtx.resume();
     
-    // Adiciona Preparação
+    const osc = this.audioCtx.createOscillator();
+    const g = this.audioCtx.createGain();
+    osc.type = tipo;
+    osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+    osc.connect(g); g.connect(this.audioCtx.destination);
+    g.gain.setValueAtTime(0.5, this.audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + dur);
+    osc.start(); osc.stop(this.audioCtx.currentTime + dur);
+  }
+
+  // --- ESTRUTURA E AUXILIARES ---
+
+  gerarSequencia() {
+    this.fila = [];
+    this.totalBlocos = this.configService.blocos.length;
+
     this.fila.push({ 
-      fase: 'PREPARAÇÃO', 
-      tempo: Number(this.configService.tempoPreparacao), 
-      rotulo: 'Prepare',
-      exercicio: 'Prepare ',
-      bloco: 0, round: 0, totalRounds: 0
+      fase: 'PREPARAÇÃO', tempo: Number(this.configService.tempoPreparacao), 
+      rotulo: 'Prepare', exercicio: 'Prepare ', bloco: 0, round: 0, totalRounds: 0
     });
 
-    // Monta os Blocos e Rounds
     this.configService.blocos.forEach((bloco, bIndex) => {
       bloco.rounds.forEach((round, rIndex) => {
-        this.fila.push({ 
-          fase: 'AÇÃO', 
-          tempo: Number(round.esforco), 
-          rotulo: round.exercicio || `Exercício ${rIndex + 1}`,
-          exercicio: round.exercicio || 'Início do exercício',
-          bloco: bIndex + 1,
-          round: rIndex + 1,
-          totalRounds: bloco.rounds.length
-        });
-
+        if (Number(round.esforco) > 0) {
+          this.fila.push({ 
+            fase: 'AÇÃO', tempo: Number(round.esforco), 
+            rotulo: round.exercicio || `Exercício ${rIndex + 1}`,
+            exercicio: round.exercicio || 'Exercício',
+            bloco: bIndex + 1, round: rIndex + 1, totalRounds: bloco.rounds.length
+          });
+        }
         if (Number(round.pausa) > 0) {
           this.fila.push({ 
-            fase: 'RECUPERAÇÃO', 
-            tempo: Number(round.pausa), 
-            rotulo: 'Recuperação',
-            exercicio: 'Respire',
-            bloco: bIndex + 1,
-            round: rIndex + 1,
-            totalRounds: bloco.rounds.length
+            fase: 'RECUPERAÇÃO', tempo: Number(round.pausa), 
+            rotulo: 'Recuperação', exercicio: 'Respire',
+            bloco: bIndex + 1, round: rIndex + 1, totalRounds: bloco.rounds.length
           });
         }
       });
-
-      if (bIndex < this.configService.blocos.length - 1) {
+      if (bIndex < this.configService.blocos.length - 1 && Number(bloco.descansoPosBloco) > 0) {
         this.fila.push({ 
-          fase: 'DESCANSO_BLOCO', 
-          tempo: Number(bloco.descansoPosBloco), 
-          rotulo: 'Descanso entre Blocos',
-          exercicio: 'Descanso de bloco. Recupere-se',
+          fase: 'DESCANSO_BLOCO', tempo: Number(bloco.descansoPosBloco), 
+          rotulo: 'Descanso', exercicio: 'Descanso de bloco',
           bloco: bIndex + 1, round: 0, totalRounds: 0
         });
       }
     });
-
     this.totalEtapasFila = this.fila.length;
-    this.totalBlocos = this.configService.blocos.length;
   }
 
   private atualizarStatusEtapa() {
@@ -187,79 +250,7 @@ export class HomePage implements OnInit {
     }
   }
 
-  proximaEtapa() {
-    this.fila.shift(); 
-    this.etapaAtualFila++;
-
-    if (this.fila.length > 0) {
-      this.atualizarStatusEtapa();
-      
-      if (this.fase === 'AÇÃO') this.falar("Iniciar!"); 
-      else if (this.tempo > 0) this.falar("Respire!"); 
-
-      // Se a etapa tiver tempo 0, pula para a próxima automaticamente
-      if (this.tempo === 0) {
-        this.proximaEtapa();
-      } else {
-        this.treinando = false; // Pequena pausa para o sistema respirar
-        this.iniciarTreino(); // Auto-start para a próxima fase
-      }
-    } else {
-      this.progressoTotal = 1;
-      this.finalizarTreino();
-    }
-  }
-
-  // --- MÉTODOS DE APOIO (Beeps, Voz, WakeLock) ---
-
-  public falar(texto: string) {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const msg = new SpeechSynthesisUtterance(texto);
-      msg.lang = 'pt-BR';
-      window.speechSynthesis.speak(msg);
-    }
-  }
-
-  private verificarSom(tempoSegundos: number) {
-    if (tempoSegundos === 5) {
-      const proximaAcao = this.fila.find((item, index) => index > 0 && item.fase === 'AÇÃO');
-      if (proximaAcao) this.falar(`Próximo: ${proximaAcao.exercicio}`);
-    }
-    if (tempoSegundos <= 3 && tempoSegundos >= 1) {
-      this.tocarBeep(600, 0.1, 'triangle');
-      this.piscarTela();
-    } else if (tempoSegundos === 0) {
-      this.tocarBeep(400, 0.8, 'square');
-      this.piscarTela();
-    }
-  }
-
-  private tocarBeep(freq: number, dur: number, tipo: any) {
-    if (!this.audioCtx) this.audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc = this.audioCtx.createOscillator();
-    const g = this.audioCtx.createGain();
-    osc.type = tipo;
-    osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
-    osc.connect(g); g.connect(this.audioCtx.destination);
-    g.gain.setValueAtTime(0.5, this.audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.0001, this.audioCtx.currentTime + dur);
-    osc.start(); osc.stop(this.audioCtx.currentTime + dur);
-  }
-  private audioCtx: any;
-
-  private piscarTela() {
-    this.telaPiscando = true;
-    setTimeout(() => this.telaPiscando = false, 150);
-  }
-
-  async ativarWakeLock() {
-    try { if ('wakeLock' in navigator) this.wakeLock = await (navigator as any).wakeLock.request('screen'); } catch (e) {}
-  }
-
-  liberarWakeLock() {
-    if (this.wakeLock) { this.wakeLock.release().then(() => this.wakeLock = null); }
-  }
+  // --- FINALIZAÇÃO E PAUSE ---
 
   pausarTreino() {
     this.treinando = false;
@@ -280,6 +271,19 @@ export class HomePage implements OnInit {
     this.rotuloAtual = 'Treino Concluído!';
     this.falar('Treino concluído. Excelente trabalho!');
     alert('Treino Concluído!');
+  }
+
+  async ativarWakeLock() {
+    try { if ('wakeLock' in navigator) this.wakeLock = await (navigator as any).wakeLock.request('screen'); } catch (e) {}
+  }
+
+  liberarWakeLock() {
+    if (this.wakeLock) { this.wakeLock.release().then(() => this.wakeLock = null); }
+  }
+
+  private piscarTela() {
+    this.telaPiscando = true;
+    setTimeout(() => this.telaPiscando = false, 150);
   }
 
   formatarTempo(segundos: number): string {
