@@ -15,12 +15,13 @@
 <ion-content class="ion-padding">
 
   <div class="global-section">
-    <ion-item lines="full">
-      <ion-label position="stacked">Tempo de Preparação (segundos)</ion-label>
+    <ion-item lines="none" class="input-item">
+      <ion-label position="stacked">TEMPO DE PREPARAÇÃO (SEG)</ion-label>
       <ion-input type="number" [(ngModel)]="configService.tempoPreparacao" (ionChange)="salvarNoDispositivo()"></ion-input>
     </ion-item>
-    <ion-item lines="full">
-      <ion-label position="stacked">Beeps Finais (segundos)</ion-label>
+    
+    <ion-item lines="none" class="input-item">
+      <ion-label position="stacked">BEEPS FINAIS (SEG)</ion-label>
       <ion-input type="number" [(ngModel)]="configService.tempoBeep" (ionChange)="salvarNoDispositivo()"></ion-input>
     </ion-item>
   </div>
@@ -28,30 +29,22 @@
   <div class="lista-blocos">
     <div class="bloco-card" *ngFor="let bloco of configService.blocos; let i = index">
       
-      <div class="bloco-header" style="display: flex; justify-content: space-between; align-items: center; background: #004eb3; padding: 5px 15px;">
-        <div style="display: flex; align-items: center; flex: 1;">
+      <div class="bloco-header">
+        <div class="header-left">
           <ion-icon 
             [name]="bloco.expandido ? 'chevron-down' : 'chevron-forward'" 
-            style="color: white; font-size: 20px; margin-right: 8px; cursor: pointer;"
+            class="toggle-icon"
             (click)="bloco.expandido = !bloco.expandido">
           </ion-icon>
-
-          <div class="input-wrapper">
-            <input 
-              [(ngModel)]="bloco.nome" 
-              (blur)="salvarNoDispositivo()"
-              class="input-nome-bloco"
-              placeholder="Nome do Bloco"
-              size="{{ bloco.nome.length > 0 ? bloco.nome.length : 10 }}">
-          </div>
+          <input [(ngModel)]="bloco.nome" (blur)="salvarNoDispositivo()" class="input-nome-bloco">
         </div>
 
-        <div class="bloco-btns" style="display: flex; align-items: center; gap: 5px;">
-          <ion-button fill="clear" (click)="duplicarBloco(i); $event.stopPropagation()">
-            <ion-icon name="copy" style="color: white !important; font-size: 20px;"></ion-icon>
+        <div class="bloco-btns">
+          <ion-button fill="clear" (click)="duplicarBloco(i)">
+            <ion-icon name="copy" style="color: white;"></ion-icon>
           </ion-button>
-          <ion-button fill="clear" (click)="removerBloco(i); $event.stopPropagation()">
-            <ion-icon name="trash" style="color: #bd2323 !important; font-size: 20px;"></ion-icon>
+          <ion-button fill="clear" (click)="removerBloco(i)">
+            <ion-icon name="trash" style="color: #ff4d4d;"></ion-icon>
           </ion-button>
         </div>
       </div>
@@ -61,50 +54,53 @@
           <thead>
             <tr>
               <th class="col-ex">EXERCÍCIO</th>
-              <th class="col-num">ESFORÇO</th>
-              <th class="col-num">PAUSA</th>
+              <th class="col-num">ESF.</th>
+              <th class="col-num">PAU.</th>
               <th class="col-del"></th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let round of bloco.rounds; let j = index">
               <td>
-                <ion-input [(ngModel)]="round.exercicio" placeholder="Nome do exercício" (ionBlur)="salvarNoDispositivo()"></ion-input>
+                <input [(ngModel)]="round.exercicio" placeholder="Ex: Flexão" (blur)="salvarNoDispositivo()" class="td-input-text">
               </td>
               <td>
-                <ion-input type="number" [(ngModel)]="round.esforco" (ionBlur)="salvarNoDispositivo()"></ion-input>
+                <input type="number" [(ngModel)]="round.esforco" (blur)="salvarNoDispositivo()" class="td-input-num">
               </td>
               <td>
-                <ion-input type="number" [(ngModel)]="round.pausa" (ionBlur)="salvarNoDispositivo()"></ion-input>
+                <input type="number" [(ngModel)]="round.pausa" (blur)="salvarNoDispositivo()" class="td-input-num">
               </td>
               <td class="col-del">
                 <ion-button fill="clear" (click)="removerRound(i, j)">
-                  <ion-icon name="close-circle"></ion-icon>
+                  <ion-icon name="close-circle" color="danger"></ion-icon>
                 </ion-button>
               </td>
             </tr>
           </tbody>
         </table>
 
-        <div class="add-round-buttons" style="display: flex; gap: 10px; padding: 10px; background: #635f5f;">
-          <ion-button size="small" fill="outline" (click)="addRound(i, 10)"> + ROUND</ion-button>
+        <div class="add-round-buttons">
+          <ion-button size="small" (click)="addRound(i, 10)">
+            <ion-icon name="add" slot="start"></ion-icon>
+            ADICIONAR ROUND
+          </ion-button>
         </div>
 
-        <ion-item class="descanso-pos">
-          <ion-label position="stacked">DESCANSO ENTRE BLOCOS</ion-label>
+        <div class="descanso-container">
+          <ion-label>DESCANSO PÓS-BLOCO (SEG)</ion-label>
           <ion-input type="number" [(ngModel)]="bloco.descansoPosBloco" (ionBlur)="salvarNoDispositivo()"></ion-input>
-        </ion-item>
+        </div>
       </div>
-    </div> </div>
+    </div>
+  </div>
 
-  <div class="acoes-finais" style="margin-top: 20px;">
-    <ion-button expand="block" fill="outline" (click)="novoBloco()">
+  <div class="acoes-finais">
+    <ion-button expand="block" class="btn-novo-bloco" (click)="novoBloco()">
       <ion-icon name="add" slot="start"></ion-icon>
-      ADICIONAR NOVO BLOCO
+      NOVO BLOCO
     </ion-button>
 
-    <ion-button *ngIf="configService.blocos.length > 0" expand="block" fill="clear" color="danger" (click)="limparTreinoCompleto()">
-      <ion-icon name="trash" slot="start"></ion-icon>
+    <ion-button *ngIf="configService.blocos.length > 0" expand="block" fill="clear" color="medium" (click)="limparTreinoCompleto()">
       APAGAR TODO O TREINO
     </ion-button>
   </div>
@@ -115,10 +111,10 @@
   <ion-toolbar>
     <ion-row>
       <ion-col>
-        <ion-button expand="block" color="success" (click)="salvar()">SALVAR PRESET</ion-button>
+        <ion-button expand="block" color="success" (click)="salvar()">SALVAR</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button expand="block" (click)="iniciarTreino()">INICIAR TREINO</ion-button>
+        <ion-button expand="block" color="primary" (click)="iniciarTreino()">INICIAR</ion-button>
       </ion-col>
     </ion-row>
   </ion-toolbar>
