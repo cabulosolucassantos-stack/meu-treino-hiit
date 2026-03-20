@@ -6,7 +6,7 @@
     <ion-title>Configurar Treino</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="limparTreinoCompleto()">
-        <ion-icon name="trash-bin" slot="icon-only" style="color: white; font-size: 24px;"></ion-icon>
+        <svg viewBox="0 0 512 512" width="24" height="24" fill="white"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h192c17.6 0 31.05-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/><path d="M192 112V72h128v40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v224M184 176l8 224M328 176l-8 224"/></svg>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -31,21 +31,20 @@
       
       <div class="bloco-header">
         <div class="header-left">
-          <ion-icon 
-            [name]="bloco.expandido ? 'chevron-down' : 'chevron-forward'" 
-            class="toggle-icon"
-            (click)="bloco.expandido = !bloco.expandido">
-          </ion-icon>
+          <div class="toggle-icon" (click)="bloco.expandido = !bloco.expandido">
+            <svg *ngIf="!bloco.expandido" viewBox="0 0 512 512" width="20" height="20" fill="white"><path d="M184 112l144 144-144 144" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"/></svg>
+            <svg *ngIf="bloco.expandido" viewBox="0 0 512 512" width="20" height="20" fill="white"><path d="M112 184l144 144 144-144" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48"/></svg>
+          </div>
           <input [(ngModel)]="bloco.nome" (blur)="salvarNoDispositivo()" class="input-nome-bloco">
         </div>
 
         <div class="bloco-btns">
-          <ion-button fill="clear" (click)="duplicarBloco(i)">
-            <ion-icon name="copy" style="color: white;"></ion-icon>
-          </ion-button>
-          <ion-button fill="clear" (click)="removerBloco(i)">
-            <ion-icon name="trash" style="color: #ff4d4d;"></ion-icon>
-          </ion-button>
+          <button class="btn-icon-header" (click)="duplicarBloco(i)">
+            <svg viewBox="0 0 512 512" width="20" height="20" fill="white"><path d="M408 432H184a40 40 0 01-40-40V120a40 40 0 01184 80h224a40 40 0 0140 40v272a40 40 0 01-40 40z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M312 32H144a80 80 0 00-80 80v272" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+          </button>
+          <button class="btn-icon-header trash" (click)="removerBloco(i)">
+            <svg viewBox="0 0 512 512" width="20" height="20" fill="#ff4d4d"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h192c17.6 0 31.05-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/><path d="M192 112V72h128v40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+          </button>
         </div>
       </div>
 
@@ -61,29 +60,20 @@
           </thead>
           <tbody>
             <tr *ngFor="let round of bloco.rounds; let j = index">
-              <td>
-                <input [(ngModel)]="round.exercicio" placeholder="Ex: Flexão" (blur)="salvarNoDispositivo()" class="td-input-text">
-              </td>
-              <td>
-                <input type="number" [(ngModel)]="round.esforco" (blur)="salvarNoDispositivo()" class="td-input-num">
-              </td>
-              <td>
-                <input type="number" [(ngModel)]="round.pausa" (blur)="salvarNoDispositivo()" class="td-input-num">
-              </td>
+              <td><input [(ngModel)]="round.exercicio" placeholder="Exercício" (blur)="salvarNoDispositivo()" class="td-input-text"></td>
+              <td><input type="number" [(ngModel)]="round.esforco" (blur)="salvarNoDispositivo()" class="td-input-num"></td>
+              <td><input type="number" [(ngModel)]="round.pausa" (blur)="salvarNoDispositivo()" class="td-input-num"></td>
               <td class="col-del">
-                <ion-button fill="clear" (click)="removerRound(i, j)">
-                  <ion-icon name="close-circle" color="danger"></ion-icon>
-                </ion-button>
+                <button class="btn-delete-round" (click)="removerRound(i, j)">
+                  <svg viewBox="0 0 512 512" width="18" height="18" fill="#ff4d4d"><path d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm75.31 260.69a16 16 0 11-22.62 22.62L256 278.63l-52.69 52.68a16 16 0 01-22.62-22.62L233.37 256l-52.68-52.69a16 16 0 0122.62-22.62L256 233.37l52.69-52.68a16 16 0 0122.62 22.62L278.63 256z"/></svg>
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
 
         <div class="add-round-buttons">
-          <ion-button size="small" (click)="addRound(i, 10)">
-            <ion-icon name="add" slot="start"></ion-icon>
-            ADICIONAR ROUND
-          </ion-button>
+          <button class="btn-nacional-add" (click)="addRound(i, 10)">+ ADICIONAR ROUND</button>
         </div>
 
         <div class="descanso-container">
@@ -95,27 +85,17 @@
   </div>
 
   <div class="acoes-finais">
-    <ion-button expand="block" class="btn-novo-bloco" (click)="novoBloco()">
-      <ion-icon name="add" slot="start"></ion-icon>
-      NOVO BLOCO
-    </ion-button>
-
-    <ion-button *ngIf="configService.blocos.length > 0" expand="block" fill="clear" color="medium" (click)="limparTreinoCompleto()">
-      APAGAR TODO O TREINO
-    </ion-button>
+    <button class="btn-nacional-bloco" (click)="novoBloco()">+ NOVO BLOCO</button>
+    <button *ngIf="configService.blocos.length > 0" class="btn-nacional-limpar" (click)="limparTreinoCompleto()">APAGAR TODO O TREINO</button>
   </div>
 
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
-    <ion-row>
-      <ion-col>
-        <ion-button expand="block" color="success" (click)="salvar()">SALVAR PRESET</ion-button>
-      </ion-col>
-      <ion-col>
-        <ion-button expand="block" color="primary" (click)="iniciarTreino()">INICIAR TREINO</ion-button>
-      </ion-col>
-    </ion-row>
+    <div class="footer-row">
+      <button class="btn-footer save" (click)="salvar()">SALVAR PRESET</button>
+      <button class="btn-footer start" (click)="iniciarTreino()">INICIAR TREINO</button>
+    </div>
   </ion-toolbar>
 </ion-footer>

@@ -224,3 +224,69 @@ ion-footer {
   .header-status-row span { font-size: 1.4rem; }
   .acoes-finais { padding-bottom: 80px !important; }
 }
+$bg-dark: #0f172a;
+$card-bg: #1e293b;
+$accent-blue: #38bdf8;
+
+ion-content {
+  --background: #{$bg-dark};
+  height: 100% !important;
+  --overflow: scroll;
+  overflow-y: auto;
+}
+
+.global-section {
+  background: #{$card-bg};
+  border-radius: 12px;
+  margin: 15px;
+  padding: 15px;
+  border-left: 4px solid #38bdf8;
+}
+
+.input-item-nacional {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  label { color: #38bdf8; font-weight: 800; font-size: 0.75rem; margin-bottom: 5px; text-transform: uppercase; }
+  input { background: #0f172a; border: 1px solid #334155; color: white; padding: 12px; border-radius: 8px; font-size: 1.2rem; font-weight: 700; outline: none; }
+}
+
+.bloco-card {
+  background: #{$card-bg};
+  border-radius: 12px;
+  margin: 15px;
+  border: 1px solid #334155;
+  .bloco-header {
+    background: #2563eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    .header-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .input-nome-bloco { background: transparent; border: none; color: white; font-weight: 800; font-size: 1.1rem; width: 100%; outline: none; }
+  }
+}
+
+.btn-icon-header { background: transparent; border: none; padding: 8px; cursor: pointer; display: flex; align-items: center; &.trash { margin-left: 5px; } }
+.btn-delete-round { background: transparent; border: none; cursor: pointer; display: flex; justify-content: center; }
+
+.rounds-table {
+  width: 100%;
+  border-collapse: collapse;
+  thead th { background: #0f172a; color: #38bdf8; font-size: 0.7rem; padding: 10px 5px; }
+  tbody td { padding: 5px; background: #1e293b; border-bottom: 1px solid #334155;
+    .td-input-text { width: 100%; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px; border-radius: 6px; }
+    .td-input-num { width: 50px; background: #0f172a; border: 1px solid #334155; color: white; padding: 8px 0; text-align: center; border-radius: 6px; }
+  }
+}
+
+.btn-nacional-add { width: 100%; background: #334155; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 800; }
+.descanso-container { padding: 15px; background: #161e2e; label { color: #94a3b8; font-size: 0.7rem; font-weight: 700; display: block; margin-bottom: 5px; } input { width: 100%; background: #0f172a; border: 1px solid #334155; color: #38bdf8; padding: 10px; border-radius: 8px; font-weight: 800; } }
+
+.acoes-finais { padding: 20px 15px 150px 15px !important; 
+  .btn-nacional-bloco { width: 100%; background: #38bdf8; color: #0f172a; border: none; padding: 15px; border-radius: 12px; font-weight: 900; }
+  .btn-nacional-limpar { width: 100%; background: transparent; color: #64748b; border: none; margin-top: 15px; text-decoration: underline; }
+}
+
+.footer-row { display: flex; gap: 10px; padding: 10px; background: #0f172a; }
+.btn-footer { flex: 1; padding: 15px; border-radius: 10px; border: none; font-weight: 800; &.save { background: #22c55e; color: #052e16; } &.start { background: white; color: #0f172a; } }
