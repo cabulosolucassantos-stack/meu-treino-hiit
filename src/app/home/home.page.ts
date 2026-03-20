@@ -6,15 +6,14 @@ import { addIcons } from 'ionicons';
 import { play, pause, refresh, settingsOutline } from 'ionicons/icons';
 import { ConfigService } from '../services/config'; 
 
-// Interface atualizada com suporte a progresso e contadores
 interface EtapaTreino {
   fase: 'PREPARAÇÃO' | 'AÇÃO' | 'RECUPERAÇÃO' | 'DESCANSO_BLOCO';
   tempo: number;
   rotulo: string;
   exercicio: string;
-  bloco: number; // Índice do bloco atual
-  round: number; // Índice do round atual
-  totalRounds: number; // Total de rounds no bloco atual
+  bloco: number;
+  round: number;
+  totalRounds: number;
 }
 
 @Component({
@@ -25,32 +24,27 @@ interface EtapaTreino {
   imports: [IonicModule, CommonModule], 
 })
 export class HomePage implements OnInit {
-  // --- VARIÁVEIS DE CONTROLE DO TIMER ---
   public tempo: number = 0;
   public timer: any;
   public treinando: boolean = false;
+  public treinoIniciado: boolean = false; // NOVA: Controla se saiu da tela inicial
   public telaPiscando: boolean = false;
   public fase: 'PREPARAÇÃO' | 'AÇÃO' | 'RECUPERAÇÃO' | 'DESCANSO_BLOCO' = 'PREPARAÇÃO';
   public tempoInicial: number = 0;
   public wakeLock: any = null;
   public fila: EtapaTreino[] = [];
   
-  // --- VARIÁVEIS DE STATUS (PARA A BARRA E CONTADORES) ---
   public rotuloAtual: string = 'Aguardando...'; 
   public indiceBlocoAtual: number = 0; 
   public totalBlocos: number = 0;
   public indiceRoundAtual: number = 0;
   public totalRoundsNoBloco: number = 0;
   
-  // Controle de Progresso (0 a 1)
   public progressoTotal: number = 0; 
   public totalEtapasFila: number = 0; 
   public etapaAtualFila: number = 0; 
 
-  constructor(
-    private router: Router,
-    public configService: ConfigService
-  ) {
+  constructor(private router: Router, public configService: ConfigService) {
     addIcons({ play, pause, refresh, 'settings-outline': settingsOutline });
   }
 
@@ -71,12 +65,18 @@ export class HomePage implements OnInit {
     this.fila = []; 
     this.progressoTotal = 0;
     this.etapaAtualFila = 0;
+    this.treinoIniciado = false; // Volta para a tela de play ao resetar
   }
 
-  // --- LÓGICA DO NARRADOR (VOZ) ---
+  // GATILHO INICIAL PARA DESTRAVAR ÁUDIO
+  public iniciarTreinoPelaPrimeiraVez() {
+    this.treinoIniciado = true;
+    this.iniciarTreino();
+  }
+
   public falar(texto: string) {
     if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel(); // Cancela falas anteriores para não encavalar
+      window.speechSynthesis.cancel();
       const msg = new SpeechSynthesisUtterance(texto);
       msg.lang = 'pt-BR';
       msg.rate = 1.1; 
@@ -121,12 +121,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/configuracao']);
   }
 
-  // --- MOTOR DE TREINO COM SUPORTE A CONTADORES ---
   gerarSequencia() {
     this.fila = [];
     this.totalBlocos = this.configService.blocos.length;
 
-    // 1. Adiciona Preparação
     this.fila.push({ 
       fase: 'PREPARAÇÃO', 
       tempo: Number(this.configService.tempoPreparacao), 
@@ -137,11 +135,8 @@ export class HomePage implements OnInit {
       totalRounds: 0
     });
 
-    // 2. Percorre os Blocos
     this.configService.blocos.forEach((bloco, bIndex) => {
       bloco.rounds.forEach((round, rIndex) => {
-        
-        // Adiciona Ação (Esforço)
         this.fila.push({ 
           fase: 'AÇÃO', 
           tempo: Number(round.esforco), 
@@ -152,7 +147,6 @@ export class HomePage implements OnInit {
           totalRounds: bloco.rounds.length
         });
 
-        // Adiciona Pausa
         if (Number(round.pausa) > 0) {
           this.fila.push({ 
             fase: 'RECUPERAÇÃO', 
@@ -166,7 +160,6 @@ export class HomePage implements OnInit {
         }
       });
 
-      // 3. Descanso entre Blocos
       if (bIndex < this.configService.blocos.length - 1) {
         this.fila.push({ 
           fase: 'DESCANSO_BLOCO', 
@@ -225,13 +218,9 @@ export class HomePage implements OnInit {
       this.tempo = atual.tempo;
       this.rotuloAtual = atual.rotulo;
       this.tempoInicial = this.tempo;
-      
-      // Atualiza Contadores para o HTML
       this.indiceBlocoAtual = atual.bloco;
       this.indiceRoundAtual = atual.round;
       this.totalRoundsNoBloco = atual.totalRounds;
-
-      // Atualiza Progresso da Barra
       this.progressoTotal = this.etapaAtualFila / this.totalEtapasFila;
     }
   }
@@ -271,8 +260,6 @@ export class HomePage implements OnInit {
 
     if (this.fila.length > 0) {
       this.atualizarStatusEtapa();
-      const atual = this.fila[0];
-
       if (this.fase === 'AÇÃO') {
         this.falar("Iniciar!"); 
       } else if (this.tempo > 0) {
@@ -283,7 +270,7 @@ export class HomePage implements OnInit {
         this.proximaEtapa();
       }
     } else {
-      this.progressoTotal = 1; // Garante barra cheia no fim
+      this.progressoTotal = 1;
       this.finalizarTreino();
     }
   }

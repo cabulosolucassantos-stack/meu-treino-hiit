@@ -173,3 +173,39 @@ ion-content {
   .interface-container { gap: 20px !important; }
   .clock-text { font-size: 45vh !important; }
 }
+.tela-inicial {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .boas-vindas {
+    h1 { color: #fff; font-size: 2.5rem; margin-bottom: 10px; }
+    p { color: #888; margin-bottom: 30px; }
+  }
+
+  .btn-iniciar-gigante {
+    background: #2dd36f;
+    color: #000;
+    border: none;
+    padding: 25px 60px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 0 30px rgba(45, 211, 111, 0.4);
+    transition: transform 0.2s;
+
+    &:active { transform: scale(0.95); }
+    ion-icon { font-size: 2rem; }
+  }
+}
