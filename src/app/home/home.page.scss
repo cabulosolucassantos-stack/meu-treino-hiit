@@ -88,38 +88,39 @@ ion-content {
   }
 }
 
-/* 5. CRONÔMETRO CENTRAL */
+/* 5. CRONÔMETRO CENTRAL (Otimizado) */
 .timer-main-frame {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-height: 45vh; // Impede que o número empurre os botões
+  max-height: 40vh; 
   min-height: 0;
 }
 
 .clock-text {
-  font-size: 38vh !important;
+  font-size: 30vh !important; 
   font-weight: 900;
   color: #000 !important;
-  line-height: 0.8;
+  line-height: 1;
   margin: 0;
   font-family: 'Arial Black', sans-serif;
-  letter-spacing: -15px;
+  letter-spacing: -5px;
   font-variant-numeric: tabular-nums;
 }
 
-/* 6. CONTROLES FIXOS (RODAPÉ) */
+/* 6. CONTROLES FIXOS NO FUNDO (BLINDADO) */
 .footer-controls {
-  position: fixed !important; 
-  bottom: 20px !important;
+  position: fixed !important;
+  bottom: 0;
   left: 0;
   width: 100%;
+  padding-bottom: 40px; 
   display: flex !important;
   flex-direction: column;
   align-items: center;
-  z-index: 9999 !important; // Garante ficar na frente da cor de fundo
+  z-index: 9999 !important; 
   pointer-events: all !important;
 }
 
@@ -128,40 +129,41 @@ ion-content {
   gap: 30px;
   justify-content: center;
   align-items: center;
+  padding: 15px 25px;
+  background: rgba(0, 0, 0, 0.05); 
+  border-radius: 50px;
 }
 
 .btn-modern {
-  width: 75px !important;
-  height: 75px !important;
+  width: 70px !important;
+  height: 70px !important;
   border-radius: 50% !important;
   border: none !important;
   display: flex !important;
   justify-content: center;
   align-items: center;
-  color: #000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   cursor: pointer;
-  transition: transform 0.1s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   opacity: 1 !important;
   visibility: visible !important;
 
   &:active { transform: scale(0.9); }
 
-  &.green  { background-color: #2dd36f !important; }
-  &.orange { background-color: #ffca28 !important; }
-  &.light  { background-color: #ffffff !important; }
+  &.green  { background-color: #2dd36f !important; color: #000; }
+  &.orange { background-color: #ffca28 !important; color: #000; }
+  &.light  { background-color: #ffffff !important; color: #000; }
 
   svg {
     display: block;
     pointer-events: none;
-    fill: currentColor; // Faz o SVG herdar a cor preta
+    fill: currentColor;
   }
 }
 
 .btn-config {
   background: none;
   border: none;
-  margin-top: 20px;
+  margin-top: 15px;
   color: #000;
   cursor: pointer;
   display: flex;
@@ -171,7 +173,7 @@ ion-content {
   svg { display: block; fill: currentColor; }
 }
 
-/* 7. TELA INICIAL (DESTRAVA SOM) */
+/* 7. TELA INICIAL (DESTRAVA ÁUDIO) */
 .tela-inicial {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -209,5 +211,5 @@ ion-content {
 @media (orientation: landscape) {
   .clock-text { font-size: 60vh !important; }
   .header-status-row span { font-size: 1.4rem; }
-  .footer-controls { bottom: 10px !important; }
+  .footer-controls { padding-bottom: 10px !important; }
 }
