@@ -196,29 +196,46 @@ export class HomePage implements OnInit {
     }
   }
 
-  iniciarTreino() {
+ iniciarTreino() {
+  // 1. Bloqueio de segurança: evita criar dois timers ao mesmo tempo
+  if (this.treinando) return; 
+
+  // 2. Lógica de INÍCIO (Só roda se o tempo estiver no começo do exercício)
+  if (this.tempo === this.tempoInicial) {
+    // Se a lista de exercícios estiver vazia, gera a sequência
     if (this.fila.length === 0) this.gerarSequencia();
     
     this.atualizarStatusEtapa();
     const etapaAtiva = this.fila[0];
     
+    // Avisa qual é o exercício por voz (Apenas no início)
     this.falar(etapaAtiva.exercicio);
+    // Impede a tela do celular de apagar
     this.ativarWakeLock();
-    this.treinando = true;
-
-    if (this.timer) clearInterval(this.timer);
-    this.verificarSom(this.tempo);
-
-    this.timer = setInterval(() => {
-      if (this.tempo > 0) {
-        this.tempo--;
-        this.verificarSom(this.tempo);
-      } 
-      else {
-        this.proximaEtapa();
-      }
-    }, 1000);
   }
+
+  // 3. Ativa o estado de treino
+  this.treinando = true;
+
+  // Limpa qualquer timer antigo por segurança antes de começar o novo
+  if (this.timer) clearInterval(this.timer);
+
+  // Toca o som inicial se for o caso
+  this.verificarSom(this.tempo);
+
+  // 4. O CRONÔMETRO (O "motor" do seu app)
+  this.timer = setInterval(() => {
+    if (this.tempo > 0) {
+      this.tempo--;
+      this.verificarSom(this.tempo); // ou verificarBeeps(), use o nome que definiu
+    } 
+    else {
+      // Quando o tempo acaba, limpa o timer e vai para o próximo passo
+      clearInterval(this.timer);
+      this.proximaEtapa(); // ou proximaFase()
+    }
+  }, 1000);
+}
 
   private atualizarStatusEtapa() {
     if (this.fila.length > 0) {
