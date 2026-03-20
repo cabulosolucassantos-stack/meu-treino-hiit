@@ -192,3 +192,12 @@ ion-content {
   .header-status-row span { font-size: 1.4rem; }
   .footer-controls { padding-bottom: 10px !important; }
 }
+ion-content {
+  --background: #0f172a;
+  height: 100% !important;
+  --overflow: scroll;
+  overflow-y: auto;
+  pointer-events: auto !important; // Garante que cliques funcionem
+  position: relative;
+  z-index: 10;
+}

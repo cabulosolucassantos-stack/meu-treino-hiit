@@ -12,7 +12,8 @@ import {
   add, 
   closeCircle, 
   chevronUp, 
-  chevronDown 
+  chevronDown,
+  chevronForward
 } from 'ionicons/icons'; 
 
 @Component({
@@ -37,7 +38,8 @@ export class ConfiguracaoPage implements OnInit {
       'add': add, 
       'close-circle': closeCircle, 
       'chevron-up': chevronUp, 
-      'chevron-down': chevronDown 
+      'chevron-down': chevronDown,
+      'chevron-forward': chevronForward
     });
   }
 
@@ -47,9 +49,15 @@ export class ConfiguracaoPage implements OnInit {
 
   // --- PERSISTÊNCIA ---
   salvarNoDispositivo() {
+    // Força a conversão para garantir que o Timer não receba uma String
+    const preparacao = Number(this.configService.tempoPreparacao);
+    const beep = Number(this.configService.tempoBeep);
+
     localStorage.setItem('treino_hiit_config', JSON.stringify(this.configService.blocos));
-    localStorage.setItem('tempo_preparacao', this.configService.tempoPreparacao.toString());
-    localStorage.setItem('tempo_beep', this.configService.tempoBeep.toString());
+    localStorage.setItem('tempo_preparacao', preparacao.toString());
+    localStorage.setItem('tempo_beep', beep.toString());
+    
+    console.log('Configurações salvas:', { preparacao, beep });
   }
 
   carregarTreino() {

@@ -17,12 +17,22 @@
   <div class="global-section">
     <ion-item lines="none" class="input-item">
       <ion-label position="stacked">TEMPO DE PREPARAÇÃO (SEG)</ion-label>
-      <ion-input type="number" [(ngModel)]="configService.tempoPreparacao" (ionChange)="salvarNoDispositivo()"></ion-input>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="configService.tempoPreparacao" 
+        (ngModelChange)="salvarNoDispositivo()"
+        placeholder="Ex: 10">
+      </ion-input>
     </ion-item>
     
     <ion-item lines="none" class="input-item">
       <ion-label position="stacked">BEEPS FINAIS (SEG)</ion-label>
-      <ion-input type="number" [(ngModel)]="configService.tempoBeep" (ionChange)="salvarNoDispositivo()"></ion-input>
+      <ion-input 
+        type="number" 
+        [(ngModel)]="configService.tempoBeep" 
+        (ngModelChange)="salvarNoDispositivo()"
+        placeholder="Ex: 3">
+      </ion-input>
     </ion-item>
   </div>
 
@@ -88,7 +98,12 @@
 
         <div class="descanso-container">
           <ion-label>DESCANSO PÓS-BLOCO (SEG)</ion-label>
-          <ion-input type="number" [(ngModel)]="bloco.descansoPosBloco" (ionBlur)="salvarNoDispositivo()"></ion-input>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="bloco.descansoPosBloco" 
+            (ngModelChange)="salvarNoDispositivo()"
+            placeholder="Ex: 60">
+          </ion-input>
         </div>
       </div>
     </div>
@@ -111,10 +126,10 @@
   <ion-toolbar>
     <ion-row>
       <ion-col>
-        <ion-button expand="block" color="success" (click)="salvar()">SALVAR</ion-button>
+        <ion-button expand="block" color="success" (click)="salvar()">SALVAR PRESET</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button expand="block" color="primary" (click)="iniciarTreino()">INICIAR</ion-button>
+        <ion-button expand="block" color="primary" (click)="iniciarTreino()">INICIAR TREINO</ion-button>
       </ion-col>
     </ion-row>
   </ion-toolbar>
