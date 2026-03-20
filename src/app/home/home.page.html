@@ -47,7 +47,8 @@
       <div class="main-buttons-row">
         
         <ion-button class="btn-modern green" (click)="iniciarTreino()" *ngIf="!treinando">
-          <ion-icon name="play" slot="icon-only" style="color: #000 !important;"></ion-icon>
+          <span style="color: black; font-weight: bold; z-index: 9999;">PLAY</span>
+          <ion-icon name="play" slot="icon-only" style="color: black !important;"></ion-icon>
         </ion-button>
         
         <ion-button class="btn-modern orange" (click)="pausarTreino()" *ngIf="treinando">

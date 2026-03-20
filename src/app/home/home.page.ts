@@ -78,6 +78,7 @@ export class HomePage implements OnInit {
   }
 
   public iniciarTreinoPelaPrimeiraVez() {
+    console.log('Botão iniciar clicado'); // Adicione este log
     this.treinoIniciado = true;
     this.iniciarTreino();
   }

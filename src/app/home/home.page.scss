@@ -188,3 +188,22 @@ ion-content {
   .clock-text { font-size: 60vh !important; }
   .header-status-row span { font-size: 1.4rem; }
 }
+.footer-controls {
+  position: fixed !important; // Muda de absolute para fixed
+  bottom: 20px !important;
+  left: 0;
+  width: 100%;
+  display: flex !important; // Força o display
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999 !important; // Coloca na frente de TUDO
+  pointer-events: all !important; // Garante que o clique funcione
+}
+
+.btn-modern {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  --opacity: 1 !important;
+  border: 2px solid black !important; // Adiciona uma borda para vermos o contorno
+}
