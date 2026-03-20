@@ -2,14 +2,13 @@
              [class.bg-recuperacao]="fase === 'RECUPERAÇÃO'"
              [class.bg-preparacao]="fase === 'PREPARAÇÃO'"
              [class.bg-descanso-bloco]="fase === 'DESCANSO_BLOCO'"
-             [class.piscando]="telaPiscando">
-
-  <div *ngIf="!treinoIniciado" class="tela-inicial">
+             [class.piscando]="telaPiscando"
+             scroll-y="false"> <div *ngIf="!treinoIniciado" class="tela-inicial">
     <div class="boas-vindas">
       <h1>HIIT Transformer</h1>
       <p>Pronto para o treino, Lucas?</p>
       <button class="btn-iniciar-gigante" (click)="iniciarTreinoPelaPrimeiraVez()">
-        <ion-icon name="play" style="color: black !important;"></ion-icon>
+        <ion-icon name="play" style="color: #000 !important;"></ion-icon>
         INICIAR
       </button>
     </div>
@@ -20,21 +19,17 @@
     <div class="header-status-row">
       <div class="status-item">
         <small>BLOCO</small>
-        <span>
-          {{ (tempo === tempoInicial && !treinando) ? 0 : (indiceBlocoAtual + 1) }} / {{ totalBlocos }}
-        </span>
+        <span>{{ (indiceBlocoAtual + 1) }} / {{ totalBlocos }}</span>
       </div>
 
       <div class="status-item main">
         <small>EXERCÍCIO</small>
-        <span>{{ rotuloAtual }}</span>
+        <span class="nome-exercicio">{{ rotuloAtual }}</span>
       </div>
 
       <div class="status-item">
         <small>ROUND</small>
-        <span>
-          {{ (tempo === tempoInicial && !treinando) ? 0 : (indiceRoundAtual + 1) }} / {{ totalRoundsNoBloco }}
-        </span>
+        <span>{{ (indiceRoundAtual + 1) }} / {{ totalRoundsNoBloco }}</span>
       </div>
     </div>
 
@@ -52,20 +47,20 @@
       <div class="main-buttons-row">
         
         <ion-button class="btn-modern green" (click)="iniciarTreino()" *ngIf="!treinando">
-          <ion-icon name="play" slot="icon-only" style="color: black !important;"></ion-icon>
+          <ion-icon name="play" slot="icon-only" style="color: #000 !important;"></ion-icon>
         </ion-button>
         
         <ion-button class="btn-modern orange" (click)="pausarTreino()" *ngIf="treinando">
-          <ion-icon name="pause" slot="icon-only" style="color: black !important;"></ion-icon>
+          <ion-icon name="pause" slot="icon-only" style="color: #000 !important;"></ion-icon>
         </ion-button>
 
         <ion-button class="btn-modern light" (click)="resetarTreino()" *ngIf="!treinando && tempo !== tempoInicial">
-          <ion-icon name="refresh" slot="icon-only" style="color: black !important;"></ion-icon>
+          <ion-icon name="refresh" slot="icon-only" style="color: #000 !important;"></ion-icon>
         </ion-button>
       </div>
 
       <ion-button fill="clear" class="btn-config" (click)="abrirConfiguracoes()" *ngIf="!treinando">
-        <ion-icon name="settings-outline" slot="icon-only" style="color: black !important;"></ion-icon>
+        <ion-icon name="settings-outline" slot="icon-only" style="color: #000 !important;"></ion-icon>
       </ion-button>
     </div>
 
